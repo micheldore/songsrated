@@ -2,16 +2,36 @@ import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import spotifyApi from "../../lib/spotify";
 import User from "../../models/User";
+const NodeCache = require("node-cache");
+const myCache = new NodeCache({ stdTTL: 200 });
 const prisma = new PrismaClient();
 const user = new User();
 var dbUser = null;
 
 export default async (req, res) => {
+    // Check if method is GET, if not return error
+    if (req.method !== "GET") {
+        res.statusCode = 405;
+        res.end();
+        return;
+    }
     const session = await getSession({ req });
+    if (!session?.user?.email) {
+        res.statusCode = 403;
+        res.json({ error: "User not found" });
+        return;
+    }
+
     dbUser = await user.getAndOrCreateUser(
         session?.user?.email,
         session?.user?.username
     );
+
+    if (!dbUser?.id) {
+        res.statusCode = 403;
+        res.json({ error: "User not found" });
+        return;
+    }
 
     var tracks = await getTwoRandomTracksWhichHaveNotBeenComparedByThisUser();
 
@@ -36,6 +56,7 @@ async function getTopTracks() {
             name: track.name,
             artist_id: track.artists[0].id,
             album_id: track.album.id,
+            rating: (track.popularity ?? 0) + 1500,
         });
 
         formattedArtists.push({
@@ -92,13 +113,13 @@ async function getTwoRandomTracksWhichHaveNotBeenComparedByThisUser() {
                 OR: [
                     {
                         user_id: dbUser?.id,
-                        winner_id: track1.id,
-                        loser_id: track2.id,
+                        winner_id: track1?.id,
+                        loser_id: track2?.id,
                     },
                     {
                         user_id: dbUser?.id,
-                        winner_id: track2.id,
-                        loser_id: track1.id,
+                        winner_id: track2?.id,
+                        loser_id: track1?.id,
                     },
                 ],
             },
@@ -107,14 +128,18 @@ async function getTwoRandomTracksWhichHaveNotBeenComparedByThisUser() {
         return isFound?.length ?? false;
     }
 
-    const myTracks = await prisma.myTrack.findMany({
-        where: {
-            user_id: dbUser?.id,
-        },
-        select: {
-            track_id: true,
-        },
-    });
+    var myTracks = myCache.get(`${dbUser?.id}tracks`);
+    if (myTracks == undefined) {
+        myTracks = await prisma.myTrack.findMany({
+            where: {
+                user_id: dbUser?.id,
+            },
+            select: {
+                track_id: true,
+            },
+        });
+        myCache.set(`${dbUser?.id}tracks`, myTracks);
+    }
 
     var haveNotVoted = false;
     var maxRetries = 10;
@@ -123,9 +148,40 @@ async function getTwoRandomTracksWhichHaveNotBeenComparedByThisUser() {
 
     while (!haveNotVoted && retries < maxRetries) {
         tracks = get2RandomSongsFromMyTracks(myTracks);
+        const [track1, track2] = tracks;
+        if (track1?.track_id == track2?.track_id) {
+            continue;
+        }
         haveNotVoted = await checkIfTracksHaveNotVoted(tracks);
         retries++;
     }
 
-    return tracks;
+    tracks = await spotifyApi.getTracks(tracks.map((track) => track.track_id));
+
+    var formattedTracks = [];
+    for (var track of tracks?.body?.tracks) {
+        var formattedTrack = {};
+        formattedTrack.spotify_id = track.id;
+        formattedTrack.name = track.name;
+        formattedTrack.artist_name = track.artists[0].name;
+        formattedTrack.album_name = track.album.name;
+        formattedTrack.album_image = track.album.images[0].url;
+        formattedTrack.preview_url = track.preview_url;
+        formattedTrack.release_date = new Date(track.album.release_date);
+
+        formattedTrack.rating = (
+            await prisma.track.findFirst({
+                where: {
+                    spotify_id: track.id,
+                },
+                select: {
+                    rating: true,
+                },
+            })
+        ).rating;
+
+        formattedTracks.push(formattedTrack);
+    }
+
+    return formattedTracks;
 }

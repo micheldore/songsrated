@@ -38,6 +38,7 @@ model user {
     id         String    @id @unique @default(cuid())
     email      String?   @unique
     spotify_id String?
+    offset     Int?      @default(0)
     myTracks   myTrack[]
     votes      vote[]
 }
