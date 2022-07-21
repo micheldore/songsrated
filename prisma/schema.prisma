@@ -1,11 +1,74 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model myTrack {
+    id               Int     @id @default(autoincrement())
+    tracksSpotify_id String?
+    usersId          String?
+    track            track?  @relation(fields: [tracksSpotify_id], references: [spotify_id])
+    user             user?   @relation(fields: [usersId], references: [id])
+
+    @@index([tracksSpotify_id], map: "myTrack_tracksSpotify_id_fkey")
+    @@index([usersId], map: "myTrack_usersId_fkey")
+}
+
+model track {
+    spotify_id        String    @id @unique
+    name              String?
+    rating            Int?
+    artistsSpotify_id String?
+    albumsSpotify_id  String?
+    album             album?    @relation(fields: [albumsSpotify_id], references: [spotify_id])
+    artist            artist?   @relation(fields: [artistsSpotify_id], references: [spotify_id])
+    myTracks          myTrack[]
+    losers            vote[]    @relation("losers")
+    winners           vote[]    @relation("winners")
+
+    @@index([albumsSpotify_id], map: "track_albumsSpotify_id_fkey")
+    @@index([artistsSpotify_id], map: "track_artistsSpotify_id_fkey")
+}
+
+model user {
+    id         String    @id @unique @default(cuid())
+    email      String?
+    spotify_id String?
+    myTracks   myTrack[]
+    votes      vote[]
+}
+
+model vote {
+    id                 String  @id @unique @default(cuid())
+    winner_id          String
+    loser_id           String
+    pre_rating_winner  Int?
+    pre_rating_loser   Int?
+    post_rating_winner Int?
+    post_rating_loser  Int?
+    usersId            String?
+    loser              track   @relation("losers", fields: [loser_id], references: [spotify_id])
+    user               user?   @relation(fields: [usersId], references: [id])
+    winner             track   @relation("winners", fields: [winner_id], references: [spotify_id])
+
+    @@index([loser_id], map: "vote_loser_id_fkey")
+    @@index([usersId], map: "vote_usersId_fkey")
+    @@index([winner_id], map: "vote_winner_id_fkey")
+}
+
+model album {
+    spotify_id   String    @id @unique
+    name         String?
+    release_date DateTime?
+    tracks       track[]
+}
+
+model artist {
+    spotify_id String  @id @unique
+    name       String?
+    tracks     track[]
 }
