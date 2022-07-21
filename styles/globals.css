@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.playpause {
+    position: absolute;
+    bottom: 55%;
+    left: 42%;
+}
+
+@media screen and (max-width: 768px) {
+    .playpause {
+        position: absolute;
+        bottom: 70%;
+        left: 30%;
+    }
+}
