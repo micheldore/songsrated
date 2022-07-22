@@ -6,6 +6,7 @@ const NodeCache = require("node-cache");
 const myCache = new NodeCache({ stdTTL: 200 });
 const user = new User();
 var dbUser = null;
+var session = null;
 
 export default async (req, res) => {
     // Check if method is GET, if not return error
@@ -14,7 +15,7 @@ export default async (req, res) => {
         res.end();
         return;
     }
-    const session = await getSession({ req });
+    session = await getSession({ req });
     if (!session?.user?.email) {
         res.statusCode = 403;
         res.json({ error: "User not found" });
@@ -43,6 +44,7 @@ export default async (req, res) => {
 };
 
 async function getTopTracks() {
+    await spotifyApi.getAccessToken();
     const toptracks = await spotifyApi.getMyTopTracks({ limit: 50 });
     var formattedTopTracks = [];
     var formattedArtists = [];
@@ -155,6 +157,7 @@ async function getTwoRandomTracksWhichHaveNotBeenComparedByThisUser() {
         retries++;
     }
 
+    await spotifyApi.getAccessToken();
     tracks = await spotifyApi.getTracks(tracks.map((track) => track.track_id));
 
     var formattedTracks = [];
