@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import spotifyApi from "../../lib/spotify";
+import serverSpotify from "../../hooks/serverSpotify";
 import User from "../../models/User";
 import prisma from "../../db";
 const NodeCache = require("node-cache");
@@ -17,16 +17,16 @@ export default async (req, res) => {
     }
 
     //Get bearer token from request format it and set it to spotifyApi
-    const bearerToken = req.headers["authorization"];
-    if (bearerToken && bearerToken.startsWith("Bearer ")) {
-        const bearer = bearerToken.split(" ");
-        const token = bearer[1];
-        spotifyApi.setAccessToken(token);
-    } else {
-        res.statusCode = 401;
-        res.json({ error: "Bearer token not found" });
-        return;
-    }
+    // const bearerToken = req.headers["authorization"];
+    // if (bearerToken && bearerToken.startsWith("Bearer ")) {
+    //     const bearer = bearerToken.split(" ");
+    //     const token = bearer[1];
+    //     spotifyApi.setAccessToken(token);
+    // } else {
+    //     res.statusCode = 401;
+    //     res.json({ error: "Bearer token not found" });
+    //     return;
+    // }
 
     session = await getSession({ req });
     if (!session?.user?.email) {
@@ -57,6 +57,7 @@ export default async (req, res) => {
 };
 
 async function getTopTracks() {
+    const spotifyApi = await serverSpotify(sessionsession);
     const toptracks = await spotifyApi.getMyTopTracks({ limit: 50 });
     var formattedTopTracks = [];
     var formattedArtists = [];
@@ -169,6 +170,7 @@ async function getTwoRandomTracksWhichHaveNotBeenComparedByThisUser() {
         retries++;
     }
 
+    const spotifyApi = await serverSpotify(session);
     tracks = await spotifyApi.getTracks(tracks.map((track) => track.track_id));
 
     var formattedTracks = [];

@@ -13,12 +13,7 @@ const Home = () => {
     const [track2, setTrack2] = useState({});
 
     async function getTracks() {
-        fetch("/api/get_two_tracks", {
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${await spotifyApi.getAccessToken()}`,
-            },
-        })
+        fetch("/api/get_two_tracks")
             .then((res) => res.json())
             .then((data) => {
                 const [track1, track2] = data;
@@ -58,7 +53,6 @@ const Home = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${await spotifyApi.getAccessToken()}`,
             },
             body: JSON.stringify({
                 winner_id: winner_id,
