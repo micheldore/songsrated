@@ -1,32 +1,65 @@
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import useSpotify from "../hooks/useSpotify";
 import Song from "../components/song";
+import Swal from "sweetalert2";
 
 const Home = () => {
     const { data: session } = useSession();
     const spotifyApi = useSpotify();
-    const [topTracks, setTopTracks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [track1, setTrack1] = useState({});
+    const [track2, setTrack2] = useState({});
+
+    function getTracks() {
+        fetch("/api/get_two_tracks")
+            .then((res) => res.json())
+            .then((data) => {
+                const [track1, track2] = data;
+                setTrack1(track1);
+                setTrack2(track2);
+                setLoading(false);
+            });
+    }
 
     useEffect(() => {
-        async function getTopTracks() {
-            const top50 =
-                (await spotifyApi.getMyTopTracks({ limit: 50, offset: 0 }))
-                    ?.body?.items ?? [];
-            const top100 = top50.concat(
-                (await spotifyApi.getMyTopTracks({ offset: 50 }))?.body
-                    ?.items ?? []
-            );
-            setTopTracks(top100);
+        Swal.showLoading();
+        getTracks();
+    }, []);
+
+    useEffect(() => {
+        if (!loading) {
+            Swal.close();
+        } else {
+            Swal.showLoading();
+        }
+    }, [loading]);
+
+    function setWinner(track_id) {
+        setLoading(true);
+        var winner_id = null;
+        var loser_id = null;
+
+        if (track_id == track1.spotify_id) {
+            winner_id = track1?.spotify_id;
+            loser_id = track2?.spotify_id;
+        } else {
+            winner_id = track2?.spotify_id;
+            loser_id = track1?.spotify_id;
         }
 
-        if (spotifyApi?.getAccessToken()) {
-            console.log(spotifyApi?.getAccessToken());
-            getTopTracks();
-        }
-    }, [spotifyApi?.getAccessToken()]);
+        fetch("api/vote", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                winner_id: winner_id,
+                loser_id: loser_id,
+            }),
+        }).then((res) => getTracks());
+    }
 
     return (
         <>
@@ -42,9 +75,8 @@ const Home = () => {
                     </h1>
 
                     <div className="md:flex md:flex-row display-block">
-                        {get2RandomSongsFromTopTracks().map((track) => {
-                            return <Song track={track} />;
-                        })}
+                        <Song track={track1} set={setWinner} />
+                        <Song track={track2} set={setWinner} />
                     </div>
 
                     <button onClick={() => signOut()}>Logout</button>
@@ -52,11 +84,6 @@ const Home = () => {
             </div>
         </>
     );
-
-    function get2RandomSongsFromTopTracks(n = 2) {
-        const shuffled = topTracks.sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, n);
-    }
 };
 
 export default Home;

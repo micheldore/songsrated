@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "../db";
 
 class User {
     async getAndOrCreateUser(email, spotify_id) {

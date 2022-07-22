@@ -1,10 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
-import spotifyApi from "../../lib/spotify";
 import User from "../../models/User";
-const NodeCache = require("node-cache");
-const myCache = new NodeCache({ stdTTL: 200 });
-const prisma = new PrismaClient();
+import Vote from "../../models/Vote";
 const user = new User();
 var dbUser = null;
 
@@ -44,4 +40,12 @@ export default async (req, res) => {
         res.json({ error: "Missing winner or loser id" });
         return;
     }
+
+    var winner_id = req.body?.winner_id;
+    var loser_id = req.body?.loser_id;
+
+    // Call vote function from models/Vote.js
+    await new Vote().vote(dbUser.id, winner_id, loser_id);
+
+    res.json({ success: true });
 };

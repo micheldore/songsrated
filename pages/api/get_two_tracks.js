@@ -1,10 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import spotifyApi from "../../lib/spotify";
 import User from "../../models/User";
+import prisma from "../../db";
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({ stdTTL: 200 });
-const prisma = new PrismaClient();
 const user = new User();
 var dbUser = null;
 

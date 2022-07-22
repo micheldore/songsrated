@@ -5,6 +5,7 @@ import ReactAudioPlayer from "react-audio-player";
 export default function Song({ ...props }) {
     const [player, setSongPlayer] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
+
     function changePlayState() {
         if (isPlaying) {
             player.pause();
@@ -21,7 +22,7 @@ export default function Song({ ...props }) {
                 <div className="flex flex-col border-2 border-amber-200 rounded-sm">
                     <div>
                         <div className="bg-slate-700 py-2 text-white text-xl px-2">
-                            {track?.name} - {track?.artists?.[0]?.name}
+                            {track?.name} - {track?.artist_name}
                         </div>
 
                         <div className="h-full flex flex-row display-block">
@@ -31,7 +32,7 @@ export default function Song({ ...props }) {
                             >
                                 <img
                                     onClick={changePlayState}
-                                    src={track?.album?.images?.[0]?.url}
+                                    src={track?.album_image}
                                     layout="fill"
                                     className="w-full h-auto display-block"
                                 />
@@ -61,14 +62,14 @@ export default function Song({ ...props }) {
                                         <tr>
                                             <th>Album:</th>
                                             <td className="min-w-0 flex-shrink-0 text-ellipsis overflow-hidden whitespace-nowrap">
-                                                {track?.album?.name}
+                                                {track?.album_name}
                                             </td>
                                         </tr>
                                         <tr>
                                             <th>Year:</th>
                                             <td>
                                                 {new Date(
-                                                    track?.album?.release_date
+                                                    track?.release_date
                                                 ).getFullYear()}
                                             </td>
                                         </tr>
@@ -90,7 +91,12 @@ export default function Song({ ...props }) {
                             className="w-full hidden"
                         />
                     </div>
-                    <button className="w-full flex flex-row justify-center bg-slate-100 py-5">
+                    <button
+                        className="w-full flex flex-row justify-center bg-slate-100 py-5"
+                        onClick={() => {
+                            props.set(track?.spotify_id);
+                        }}
+                    >
                         <div className="block">
                             <BiUpvote className="inline align-middle" />
                         </div>
