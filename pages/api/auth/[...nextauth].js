@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 import spotifyApi, { LOGIN_URL } from "../../../lib/spotify";
+import User from "../../../models/User";
 
 async function refreshAccessToken(token) {
     try {
@@ -55,9 +56,15 @@ export default NextAuth({
             return await refreshAccessToken(token);
         },
         async session({ session, token }) {
+            const dbUser = await new User().getAndOrCreateUser(
+                session?.user?.email,
+                session?.user?.id
+            );
             session.user.accessToken = token.accessToken;
             session.user.refreshToken = token.refreshToken;
             session.user.username = token.username;
+            session.user.db_id = dbUser?.id;
+
             return session;
         },
     },
