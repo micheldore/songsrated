@@ -1,6 +1,172 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    /* background: #232922 !important; */
+    /* background: repeating-linear-gradient(
+        to right,
+        #232922,
+        #283027 2px,
+        #232922 10%
+      ); */
+      background: repeating-linear-gradient(
+  to right,
+  #232922,
+  #524d4d 2px,
+  #232922 2px,
+  #232922 20px
+);
+}
+
+.img-gradient {
+    position: relative;
+    display:inline-block;
+  background: -moz-linear-gradient(bottom, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.85) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, left bottom, color-stop(0%,rgba(0,0,0,0.85)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(bottom, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(bottom, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(bottom, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* IE10+ */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+}
+
+.vote-artist {
+    display: block;
+    position: static;
+    color:white;
+    font-family: 'Inter', 'system-ui';
+    font-style: normal;
+    font-weight: 250;
+    z-index: 0;
+    width: 100%;
+    top: 80%;
+    text-align: center;
+}
+
+.vote-play-button {
+    display: block;
+    position: relative;
+    left: 45%;
+    padding-top:40%;
+}
+
+.vote-image-wrapper {
+    display: block;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.vote-title-wrapper {
+    display: block;
+    position: absolute;
+    width: 100%;
+    padding-top:75%;
+    text-align: center;
+}
+
+.vote-song {
+    display: block;
+    color:white;
+    font-family: 'Inter', 'system-ui';
+    font-style: normal;
+    font-weight: 550;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    top: 85%;
+}
+
+.vote-img{
+    position: relative;
+    z-index: -1;
+    width: 100%;
+}
+.vote-title {
+    left: 0%;
+    right: 0%;
+    top: 0%;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+
+    /* identical to box height */
+    text-align: center;
+    letter-spacing: 0.45em;
+
+    color: #FFFFFF;
+}
+
+.login-button {
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    top: 55%;
+
+    background: #000000;
+    border-radius: 4px;
+}
+
+.login-subtitle {
+    position: absolute;
+    left: 23.66%;
+    right: 23.66%;
+    top: 25%;
+    bottom: 0%;
+
+    font-family: 'Inter', 'system-ui';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 11px;
+
+    /* identical to box height */
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
+.login-title {
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 20%;
+
+    font-family: "Inter", "system-ui";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 15px;
+
+    /* identical to box height */
+    text-align: center;
+    letter-spacing: 0.45em;
+
+    color: #FFFFFF;
+}
+
+.login-text {
+    position: absolute;
+    left: 16.56%;
+    right: 16.56%;
+    top: 32.73%;
+
+    font-family: 'Inter', 'system-ui';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+
+    /* or 178% */
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
 .playpause {
     position: absolute;
     bottom: 55%;

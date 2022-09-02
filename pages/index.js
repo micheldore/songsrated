@@ -72,20 +72,35 @@ const Home = () => {
 
     return (
         <>
-            <div className="flex min-h-screen min-w-screen flex-col items-center justify-center bg-amber-200">
+            <div className="flex min-h-screen min-w-screen flex-col items-center justify-center">
                 <Head>
                     <title>Songsrated</title>
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
 
                 <main className="flex w-full flex-1 flex-col items-center justify-center px-5 text-center">
-                    <h1 className="text-xl font-bold min-w-full px-0 bg-amber-200">
-                        Welcome to Songsrated, {session?.user?.name}!
+                    <h1 className="text-xl font-bold min-w-full px-0 vote-title">
+                        SONGSRATED
                     </h1>
 
-                    <div className="md:flex md:flex-row display-block">
+                    <div
+                        className="md:flex md:flex-row display-block"
+                        style={{ width: "70%" }}
+                    >
                         <Song track={track1} set={setWinner} />
                         <Song track={track2} set={setWinner} />
+                    </div>
+
+                    <div
+                        className="flex flex-row items-center justify-evenly"
+                        onClick={() =>
+                            (window.location = "http://localhost:3000/ranking")
+                        }
+                    >
+                        <img src="arrow.png" />
+                        <span className="pl-2 text-white">
+                            Return to rating
+                        </span>
                     </div>
 
                     <button onClick={() => signOut()}>Logout</button>

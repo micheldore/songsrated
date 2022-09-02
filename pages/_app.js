@@ -1,3 +1,4 @@
+import "inter-ui/inter.css";
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import {

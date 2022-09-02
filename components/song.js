@@ -19,9 +19,39 @@ export default function Song({ ...props }) {
     return (
         <>
             <div className="md:px-10 py-2">
-                <div className="flex flex-col border-2 border-amber-200 rounded-sm">
+                <div className="flex flex-col rounded-sm">
                     <div>
-                        <div className="bg-slate-700 py-2 text-white text-xl px-2">
+                        <div className="flex flex-row items-center justify-between">
+                            <div
+                                class="img-gradient flex-col items-center justify-between"
+                                onClick={changePlayState}
+                            >
+                                <div className="vote-image-wrapper">
+                                    <img
+                                        className="vote-play-button"
+                                        src={
+                                            isPlaying
+                                                ? "pause_button.png"
+                                                : "play_button.png"
+                                        }
+                                        alt=""
+                                    />
+                                </div>
+                                <div class="vote-title-wrapper">
+                                    <span className="vote-song">
+                                        {track?.name}
+                                    </span>
+                                    <span className="vote-artist">
+                                        {track?.artist_name}
+                                    </span>
+                                </div>
+                                <img
+                                    className="vote-img"
+                                    src={track?.album_image}
+                                />
+                            </div>
+                        </div>
+                        {/* <div className="bg-slate-700 py-2 text-white text-xl px-2">
                             {track?.name} - {track?.artist_name}
                         </div>
 
@@ -80,7 +110,7 @@ export default function Song({ ...props }) {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> */}
                         <ReactAudioPlayer
                             src={track?.preview_url}
                             ref={(element) => {
@@ -92,7 +122,7 @@ export default function Song({ ...props }) {
                         />
                     </div>
                     <button
-                        className="w-full flex flex-row justify-center bg-slate-100 py-5"
+                        className="w-full flex flex-row justify-center bg-slate-100 py-1"
                         onClick={() => {
                             props.set(track?.spotify_id);
                         }}

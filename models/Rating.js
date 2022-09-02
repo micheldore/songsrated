@@ -16,6 +16,31 @@ class Rating {
         this.elo = new Elo(uscf, min_score, max_score);
     }
 
+    // Get first 100 tracks from the database
+    async getTracks() {
+        return await prisma.track.findMany({
+            take: 100,
+            select: {
+                name: true,
+                artist: {
+                    select: {
+                        name: true,
+                    },
+                },
+                album: {
+                    select: {
+                        release_date: true,
+                        name: true,
+                    },
+                },
+                rating: true,
+            },
+            orderBy: {
+                rating: "desc",
+            },
+        });
+    }
+
     // Get the rating for a track from the database
     async getRating(track_id) {
         const track = await prisma.track.findFirst({
