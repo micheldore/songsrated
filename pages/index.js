@@ -16,10 +16,19 @@ const Home = () => {
         fetch("/api/get_two_tracks")
             .then((res) => res.json())
             .then((data) => {
-                const [track1, track2] = data;
-                setTrack1(track1);
-                setTrack2(track2);
-                setLoading(false);
+                if (data.error) {
+                    Swal.fire({
+                        title: "No more tracks to compare",
+                        text: "You have compared all the tracks in your library",
+                        icon: "info",
+                        confirmButtonText: "Ok",
+                    });
+                } else {
+                    const [track1, track2] = data;
+                    setTrack1(track1);
+                    setTrack2(track2);
+                    setLoading(false);
+                }
             });
     }
 

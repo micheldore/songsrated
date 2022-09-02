@@ -28,7 +28,6 @@ class Track {
 
         for (const track of tracks)
             formattedTracks.push(this.formatTrackForDatabase(track));
-
         return formattedTracks;
     }
 

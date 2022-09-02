@@ -1,9 +1,11 @@
 import { getSession } from "next-auth/react";
+import { exit } from "process";
 import MyTrack from "../../models/MyTrack";
 var session = null;
 
 export default async (req, res) => {
     const myTrack = new MyTrack(req);
+
     // Check if method is GET, if not return error
     if (req.method !== "GET") {
         res.statusCode = 405;
@@ -28,12 +30,15 @@ export default async (req, res) => {
         await myTrack.getTwoRandomTracksWhichHaveNotBeenComparedByThisUser();
 
     if (!tracks.length) {
-        console.log("No tracks found");
         await myTrack.getMyTopTracksFromSpotifyAndInsertIntoDatabase();
         tracks =
             await myTrack.getTwoRandomTracksWhichHaveNotBeenComparedByThisUser();
-        res.json(tracks);
+        if (!tracks) res.json({ error: "No tracks found" });
+        else {
+            res.json(tracks);
+        }
     } else {
+        if (!tracks) res.json({ error: "No tracks found" });
         res.json(tracks);
     }
 };
