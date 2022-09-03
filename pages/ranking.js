@@ -1,8 +1,4 @@
-import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import useSpotify from "../hooks/useSpotify";
-import Swal from "sweetalert2";
 import RankingTable from "../components/rankingtable";
 
 const Ranking = () => {
