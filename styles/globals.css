@@ -80,6 +80,24 @@ body {
     z-index: 1;
 }
 
+.return-text {
+    font-family: 'Inter', 'system-ui';
+}
+
+.info-button {
+    left: 10px;
+    position: absolute;
+    top: 10px;
+    color: white;
+}
+
+.logout-button {
+    right: 10px;
+    position: absolute;
+    top: 10px;
+    color: white;
+}
+
 .vote-title-wrapper {
     display: block;
     position: absolute;

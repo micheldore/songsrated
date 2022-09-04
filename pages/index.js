@@ -53,6 +53,21 @@ const Home = () => {
             didOpen: () => {
                 Swal.showLoading();
             },
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+        });
+    }
+
+    async function showInfoModal() {
+        Swal.fire({
+            title: "How to use this app",
+            html: `
+                <p>Here you can compare two songs from your Spotify library and choose which one you like more.</p>
+                <p>After you choose a song, a new pair of songs will be loaded.</p>
+                <p>When you have compared all the songs in your library, you will be notified.</p>
+            `,
+            icon: "info",
+            confirmButtonText: "Ok",
         });
     }
 
@@ -87,9 +102,23 @@ const Home = () => {
                 <Head>
                     <title>Songsrated</title>
                     <link rel="icon" href="/favicon.ico" />
+                    <link
+                        rel="stylesheet"
+                        href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+                    ></link>
                 </Head>
 
                 <main className="flex w-full flex-1 flex-col items-center justify-center pb-10 pt-10 text-center">
+                    <div>
+                        <i
+                            class="bx bx-md bxs-info-square info-button"
+                            onClick={showInfoModal}
+                        ></i>
+                        <i
+                            class="bx bx-md bxs-exit logout-button"
+                            onClick={signOut}
+                        ></i>
+                    </div>
                     <h1 className="text-xl font-bold min-w-full px-0 vote-title">
                         SONGSRATED
                     </h1>
@@ -107,7 +136,7 @@ const Home = () => {
                         onClick={() => (window.location = "/ranking")}
                     >
                         <img src="arrow.png" />
-                        <span className="pl-2 text-white">
+                        <span className="pl-2 text-white return-text">
                             Return to rating
                         </span>
                     </div>
