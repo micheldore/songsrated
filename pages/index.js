@@ -33,7 +33,7 @@ const Home = () => {
     }
 
     useEffect(() => {
-        Swal.showLoading();
+        showLoadingAnimation();
         getTracks();
     }, []);
 
@@ -41,9 +41,20 @@ const Home = () => {
         if (!loading) {
             Swal.close();
         } else {
-            Swal.showLoading();
+            showLoadingAnimation();
         }
     }, [loading]);
+
+    async function showLoadingAnimation() {
+        setLoading(true);
+        Swal.fire({
+            title: "Loading new songs",
+            html: "Alright! Let's compare some new songs",
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+    }
 
     async function setWinner(track_id) {
         setLoading(true);
@@ -78,14 +89,14 @@ const Home = () => {
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
 
-                <main className="flex w-full flex-1 flex-col items-center justify-center px-5 text-center">
+                <main className="flex w-full flex-1 flex-col items-center justify-center pb-10 pt-10 text-center">
                     <h1 className="text-xl font-bold min-w-full px-0 vote-title">
                         SONGSRATED
                     </h1>
 
                     <div
                         className="md:flex md:flex-row display-block"
-                        style={{ width: "70%" }}
+                        style={{ width: "60%" }}
                     >
                         <Song track={track1} set={setWinner} />
                         <Song track={track2} set={setWinner} />
@@ -100,8 +111,6 @@ const Home = () => {
                             Return to rating
                         </span>
                     </div>
-
-                    <button onClick={() => signOut()}>Logout</button>
                 </main>
             </div>
         </>
