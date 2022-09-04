@@ -93,9 +93,7 @@ const Home = () => {
 
                     <div
                         className="flex flex-row items-center justify-evenly"
-                        onClick={() =>
-                            (window.location = "http://localhost:3000/ranking")
-                        }
+                        onClick={() => (window.location = "/ranking")}
                     >
                         <img src="arrow.png" />
                         <span className="pl-2 text-white">

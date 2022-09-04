@@ -5,7 +5,6 @@ var session = null;
 
 export default async (req, res) => {
     const myTrack = new MyTrack(req);
-
     // Check if method is GET, if not return error
     if (req.method !== "GET") {
         res.statusCode = 405;
@@ -26,19 +25,8 @@ export default async (req, res) => {
         return;
     }
 
-    var tracks =
-        await myTrack.getTwoRandomTracksWhichHaveNotBeenComparedByThisUser();
+    const tracks = await myTrack.getTwoRandomUnvotedTracks();
 
-    if (!tracks.length) {
-        await myTrack.getMyTopTracksFromSpotifyAndInsertIntoDatabase();
-        tracks =
-            await myTrack.getTwoRandomTracksWhichHaveNotBeenComparedByThisUser();
-        if (!tracks) res.json({ error: "No tracks found" });
-        else {
-            res.json(tracks);
-        }
-    } else {
-        if (!tracks) res.json({ error: "No tracks found" });
-        res.json(tracks);
-    }
+    if (!tracks.length) res.json({ error: "No tracks found" });
+    else res.json(tracks);
 };

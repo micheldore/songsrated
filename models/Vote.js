@@ -1,5 +1,6 @@
 import Rating from "./Rating";
 import prisma from "../db";
+import serverSpotify from "../hooks/serverSpotify";
 
 const rating = new Rating();
 
@@ -44,6 +45,38 @@ class Vote {
             calculatedRating?.post_winner_rating,
             calculatedRating?.post_loser_rating
         );
+    }
+
+    async formatTracksForVote(tracks, session) {
+        const spotifyApi = await serverSpotify(session);
+        tracks = await spotifyApi.getTracks(tracks);
+
+        var formattedTracks = [];
+        for (var track of tracks?.body?.tracks) {
+            var formattedTrack = {};
+            formattedTrack.spotify_id = track.id;
+            formattedTrack.name = track.name;
+            formattedTrack.artist_name = track.artists[0].name;
+            formattedTrack.album_name = track.album.name;
+            formattedTrack.album_image = track.album.images[0].url;
+            formattedTrack.preview_url = track.preview_url;
+            formattedTrack.release_date = new Date(track.album.release_date);
+
+            formattedTrack.rating = (
+                await prisma.track.findFirst({
+                    where: {
+                        spotify_id: track.id,
+                    },
+                    select: {
+                        rating: true,
+                    },
+                })
+            ).rating;
+
+            formattedTracks.push(formattedTrack);
+        }
+
+        return formattedTracks;
     }
 }
 

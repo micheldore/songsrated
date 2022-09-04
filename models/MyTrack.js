@@ -4,26 +4,32 @@ import Track from "./Track";
 import Artist from "./Artist";
 import prisma from "../db";
 import serverSpotify from "../hooks/serverSpotify";
-import { exit } from "process";
+import DatabaseConnector from "../database/connection";
+import Vote from "./Vote";
 
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({ stdTTL: 200 });
 
 class MyTrack {
     constructor(req) {
-        this.session = getSession({ req });
+        this.req = req;
         this.track = new Track();
         this.album = new Album();
         this.artist = new Artist();
     }
 
+    async getSession() {
+        const req = this.req;
+        return await getSession({ req });
+    }
+
     async getMyTopTracksFromSpotify(count = 50) {
-        const spotifyApi = await serverSpotify(await this.session);
+        const spotifyApi = await serverSpotify(await this.getSession());
         return await spotifyApi.getMyTopTracks({ limit: count });
     }
 
     async getOffsetFromDatabase() {
-        const session = await this.session;
+        const session = await this.getSession();
         const user = await prisma.user.findFirst({
             where: {
                 id: session?.user?.db_id,
@@ -41,7 +47,7 @@ class MyTrack {
         if (offset > 10000 || offset < 0) {
             offset = 0;
         }
-        const session = await this.session;
+        const session = await this.getSession();
 
         return await prisma.user.update({
             where: {
@@ -55,7 +61,7 @@ class MyTrack {
 
     // Get track from my spotify tracks library
     async getTracksFromSpotify() {
-        const spotifyApi = await serverSpotify(await this.session);
+        const spotifyApi = await serverSpotify(await this.getSession());
         const offset = await this.getOffsetFromDatabase();
         const tracks = await spotifyApi.getMySavedTracks({
             limit: 50,
@@ -107,7 +113,7 @@ class MyTrack {
 
     // Function that formats a track object from spotify for insertion as a myTrack object into the database
     async formatMyTrackForDatabase(track) {
-        const session = await this.session;
+        const session = await this.getSession();
         const user_id = session?.user?.db_id;
 
         return {
@@ -128,7 +134,7 @@ class MyTrack {
         }
 
         const [track1, track2] = tracks;
-        const session = await this.session;
+        const session = await this.getSession();
         const user_id = session?.user?.db_id;
 
         const isFound = await prisma.vote.findFirst({
@@ -162,77 +168,60 @@ class MyTrack {
         });
     }
 
-    async getTwoRandomTracksWhichHaveNotBeenComparedByThisUser() {
-        const session = await this.session;
+    // Function that removes random item from object and returns the item and new object in an array
+    getRandomItemFromObjectAndRemoveIt(obj) {
+        var keys = Object.keys(obj);
+        var randomIndex = Math.floor(Math.random() * keys.length);
+        var randomKey = keys[randomIndex];
+        var randomItem = obj[randomKey];
+        delete obj[randomKey];
+        return [randomItem, obj];
+    }
+
+    // Function that returns a list of all the combinations of two tracks from a list of tracks that have not been voted on by the user
+    async getMyUnvotedTracks() {
+        const session = await this.getSession();
         const user_id = session?.user?.db_id;
 
-        // var myTracks = myCache.get(`${user_id}tracks`);
+        var myTracks = myCache.get(`${user_id}tracks`);
 
-        // if (!myTracks) {
-        var myTracks = await this.getMyTrackFromDB(user_id);
-        //     myCache.set(`${user_id}tracks`, myTracks);
-        // }
+        if (
+            !myTracks ||
+            (typeof myTracks == "object" && Object.keys(myTracks).length == 0)
+        ) {
+            const query = `select t1.track_id as 't1', t2.track_id as 't2' from myTrack t1 
+                            join myTrack t2
+                            left join vote v on (v.user_id = ? 
+                                        and (v.winner_id = t1.track_id and v.loser_id = t2.track_id or v.loser_id = t1.track_id and v.winner_id = t2.track_id))
+                            where v.id is null AND t1.user_id = ? and t2.user_id = ?
+                            and t1.id != t2.id
+                            limit 2000`;
 
-        if (myTracks.length < 2) {
-            return [];
+            const result = await new DatabaseConnector().query(query, [
+                user_id,
+                user_id,
+                user_id,
+            ]);
+
+            myCache.set(`${user_id}tracks`, result);
+            return result;
+        } else {
+            return myTracks;
         }
+    }
 
-        var haveNotVoted = false;
-        var maxRetries = 20;
-        var retries = 0;
-        var tracks = [];
+    async getTwoRandomUnvotedTracks() {
+        const session = await this.getSession();
+        const user_id = session?.user?.db_id;
 
-        while (!haveNotVoted && retries < maxRetries) {
-            tracks = this.getTwoRandomSongsFromMyTracks(myTracks);
+        const unvotedTracks = await this.getMyUnvotedTracks(); // get all unvoted tracks from database
+        var [randomTrack, unvotedTracksWithoutTheseTracks] =
+            this.getRandomItemFromObjectAndRemoveIt(unvotedTracks); // get random track combination from unvoted tracks and remove it from the list of unvoted tracks
+        const tracks = [randomTrack.t1, randomTrack.t2];
 
-            const [track1, track2] = tracks;
-            if (track1?.track_id == track2?.track_id) {
-                continue;
-            }
-            haveNotVoted = await this.checkIfTracksHaveNotVoted(tracks);
+        myCache.set(`${user_id}tracks`, unvotedTracksWithoutTheseTracks); // update cache with new list of unvoted tracks
 
-            if (retries == maxRetries - 10) {
-                await this.getMyTopTracksFromSpotifyAndInsertIntoDatabase();
-                myTracks = await this.getMyTrackFromDB(user_id);
-            }
-
-            retries++;
-        }
-        if (!haveNotVoted) {
-            return [];
-        }
-
-        const spotifyApi = await serverSpotify(await this.session);
-        tracks = await spotifyApi.getTracks(
-            tracks.map((track) => track.track_id)
-        );
-
-        var formattedTracks = [];
-        for (var track of tracks?.body?.tracks) {
-            var formattedTrack = {};
-            formattedTrack.spotify_id = track.id;
-            formattedTrack.name = track.name;
-            formattedTrack.artist_name = track.artists[0].name;
-            formattedTrack.album_name = track.album.name;
-            formattedTrack.album_image = track.album.images[0].url;
-            formattedTrack.preview_url = track.preview_url;
-            formattedTrack.release_date = new Date(track.album.release_date);
-
-            formattedTrack.rating = (
-                await prisma.track.findFirst({
-                    where: {
-                        spotify_id: track.id,
-                    },
-                    select: {
-                        rating: true,
-                    },
-                })
-            ).rating;
-
-            formattedTracks.push(formattedTrack);
-        }
-
-        return formattedTracks;
+        return (await new Vote().formatTracksForVote(tracks, session)) ?? [];
     }
 }
 
