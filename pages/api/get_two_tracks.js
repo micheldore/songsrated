@@ -26,15 +26,15 @@ export default async (req, res) => {
         return;
     }
 
-    const voteCount = await new Vote().getVoteCountOfToday(
-        session?.user?.db_id
-    );
+    // const voteCount = await new Vote().getVoteCountOfToday(
+    //     session?.user?.db_id
+    // );
 
-    if (voteCount >= 100) {
-        res.statusCode = 403;
-        res.json({ error: "You have reached your daily vote limit" });
-        return;
-    }
+    // if (voteCount >= 100) {
+    //     res.statusCode = 403;
+    //     res.json({ error: "You have reached your daily vote limit" });
+    //     return;
+    // }
 
     const tracks = await myTrack.getTwoRandomUnvotedTracks();
 

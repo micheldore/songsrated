@@ -49,7 +49,7 @@ class Vote {
             calculatedRating?.post_winner_rating,
             calculatedRating?.post_loser_rating
         ).then((result) => {
-            this.addOneToVoteCountOfToday(user_id);
+            // this.addOneToVoteCountOfToday(user_id);
         });
     }
 
