@@ -33,7 +33,8 @@ export default async (req, res) => {
 
     dbUser = await user.getAndOrCreateUser(
         session?.user?.email,
-        session?.user?.username
+        session?.user?.username,
+        true
     );
 
     if (!dbUser?.id) {

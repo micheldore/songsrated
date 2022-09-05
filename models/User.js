@@ -14,7 +14,7 @@ class User {
             },
         });
 
-        if (!sessionCheck) {
+        if (false) {
             if (dbUser?.first_login || false) {
                 await this.changeFirstLogin(email, false);
                 await new MyTrack().getTopTracksFromSpotifyAndInsertInDb(true);
