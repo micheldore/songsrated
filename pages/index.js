@@ -1,13 +1,10 @@
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import useSpotify from "../hooks/useSpotify";
 import Song from "../components/song";
 import Swal from "sweetalert2";
 
 const Home = () => {
-    const { data: session } = useSession();
-    const spotifyApi = useSpotify();
     const [loading, setLoading] = useState(true);
     const [track1, setTrack1] = useState({});
     const [track2, setTrack2] = useState({});
@@ -18,10 +15,13 @@ const Home = () => {
             .then((data) => {
                 if (data.error) {
                     Swal.fire({
-                        title: "No more tracks to compare",
-                        text: "You have compared all the tracks in your library",
+                        title:
+                            data?.error ??
+                            "No more tracks to compare in the database",
+                        text: "No more tracks to compare. Please come back tomorrow to compare more tracks.",
                         icon: "info",
                         confirmButtonText: "Ok",
+                        width: "80%",
                     });
                 } else {
                     const [track1, track2] = data;
@@ -62,8 +62,8 @@ const Home = () => {
         Swal.fire({
             title: "How to use this app",
             html: `
-                <p>Here you can compare two songs from your Spotify library and choose which one you like more.</p>
-                <p>After you choose a song, a new pair of songs will be loaded.</p>
+                <p>Here you can compare two songs from your Spotify library and choose which one you like more.</p><br>
+                <p>After you choose a song, a new pair of songs will be loaded.</p><br>
                 <p>When you have compared all the songs in your library, you will be notified.</p>
             `,
             icon: "info",

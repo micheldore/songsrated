@@ -18,7 +18,7 @@ class User {
             if (dbUser?.first_login || false) {
                 await this.changeFirstLogin(email, false);
                 await new MyTrack().getTopTracksFromSpotifyAndInsertInDb(true);
-            } else await this.updateLastActivity(email);
+            }
         }
 
         return dbUser;

@@ -2,6 +2,9 @@ import Rating from "./Rating";
 import prisma from "../db";
 import serverSpotify from "../hooks/serverSpotify";
 import DatabaseConnector from "../database/connection";
+// setup node cache
+const NodeCache = require("node-cache");
+const myCache = new NodeCache({ stdTTL: 1200 });
 
 const rating = new Rating();
 
@@ -45,7 +48,9 @@ class Vote {
             calculatedRating?.pre_loser_rating,
             calculatedRating?.post_winner_rating,
             calculatedRating?.post_loser_rating
-        );
+        ).then((result) => {
+            this.addOneToVoteCountOfToday(user_id);
+        });
     }
 
     async getAllUnusedVotes(user_id) {
@@ -62,6 +67,61 @@ class Vote {
             user_id,
             user_id,
         ]);
+    }
+
+    // Function that returns the vote count of the user for today using the user_id and prisma
+    // Save the result in the cache for 1200 seconds
+    async getVoteCountOfToday(user_id) {
+        var today = new Date(new Date().getTime());
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const cacheKey = `voteCountOfToday-${user_id}`;
+        const cachedValue = myCache.get(cacheKey);
+        if (cachedValue) {
+            return cachedValue;
+        } else {
+            const voteCount = await prisma.vote.count({
+                where: {
+                    user_id: user_id,
+                    created_at: {
+                        gte: today,
+                        lt: tomorrow,
+                    },
+                    NOT: {
+                        created_at: null,
+                    },
+                },
+            });
+
+            myCache.set(cacheKey, voteCount);
+            return voteCount;
+        }
+    }
+
+    async addOneToVoteCountOfToday(user_id) {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const cacheKey = `voteCountOfToday-${user_id}`;
+        const cachedValue = myCache.get(cacheKey);
+        if (cachedValue) {
+            myCache.set(cacheKey, cachedValue + 1);
+        } else {
+            const voteCount = await prisma.vote.count({
+                where: {
+                    user_id: user_id,
+                    created_at: {
+                        gte: today,
+                        lt: tomorrow,
+                    },
+                },
+            });
+
+            myCache.set(cacheKey, voteCount + 1);
+        }
     }
 
     async formatTracksForVote(tracks, session) {
