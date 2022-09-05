@@ -24,7 +24,8 @@ class MyTrack {
     }
 
     async getMyTopTracksFromSpotify(count = 50) {
-        const spotifyApi = await serverSpotify(await this.getSession());
+        const session = await this.getSession();
+        const spotifyApi = await serverSpotify(session);
         return await spotifyApi.getMyTopTracks({ limit: count });
     }
 
@@ -79,10 +80,13 @@ class MyTrack {
         return formattedTracks;
     }
 
-    async getMyTopTracksFromSpotifyAndInsertIntoDatabase() {
-        const toptracks = await this.getMyTopTracksFromSpotify();
-        const tracks = await this.getTracksFromSpotify();
-        // const tracks = this.track.getTracksFromResponse(libraryTracks);
+    async getTopTracksFromSpotifyAndInsertInDb(topTracks = false) {
+        var tracks = [];
+        if (topTracks) {
+            tracks = await this.getMyTopTracksFromSpotify();
+            tracks = this.track.getTracksFromResponse(tracks);
+        } else tracks = await this.getTracksFromSpotify();
+
         var promises = [];
         promises.push(this.insert(tracks));
         promises.push(this.track.insert(tracks));
@@ -157,7 +161,7 @@ class MyTrack {
         else return false;
     }
 
-    async getMyTrackFromDB(user_id) {
+    async getMyTracksFromDB(user_id) {
         return await prisma.myTrack.findMany({
             where: {
                 user_id: user_id,
@@ -189,22 +193,21 @@ class MyTrack {
             !myTracks ||
             (typeof myTracks == "object" && Object.keys(myTracks).length == 0)
         ) {
-            const query = `select t1.track_id as 't1', t2.track_id as 't2' from myTrack t1 
-                            join myTrack t2
-                            left join vote v on (v.user_id = ? 
-                                        and (v.winner_id = t1.track_id and v.loser_id = t2.track_id or v.loser_id = t1.track_id and v.winner_id = t2.track_id))
-                            where v.id is null AND t1.user_id = ? and t2.user_id = ?
-                            and t1.id != t2.id
-                            limit 2000`;
+            myTracks = await new Vote().getAllUnusedVotes(user_id);
+            if (
+                typeof myTracks == "object" &&
+                Object.keys(myTracks).length == 0
+            ) {
+                await this.getTopTracksFromSpotifyAndInsertInDb(true);
+                myTracks = await new Vote().getAllUnusedVotes(user_id);
+            }
 
-            const result = await new DatabaseConnector().query(query, [
-                user_id,
-                user_id,
-                user_id,
-            ]);
+            if (Object.keys(myTracks).length == 0) {
+                myTracks = false;
+            }
 
-            myCache.set(`${user_id}tracks`, result);
-            return result;
+            myCache.set(`${user_id}tracks`, myTracks);
+            return myTracks;
         } else {
             return myTracks;
         }
@@ -215,6 +218,8 @@ class MyTrack {
         const user_id = session?.user?.db_id;
 
         const unvotedTracks = await this.getMyUnvotedTracks(); // get all unvoted tracks from database
+
+        if (!unvotedTracks) return [];
         var [randomTrack, unvotedTracksWithoutTheseTracks] =
             this.getRandomItemFromObjectAndRemoveIt(unvotedTracks); // get random track combination from unvoted tracks and remove it from the list of unvoted tracks
         const tracks = [randomTrack.t1, randomTrack.t2];

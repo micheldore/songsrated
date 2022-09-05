@@ -36,16 +36,20 @@ model track {
 }
 
 model user {
-  id         String    @id @unique @default(cuid())
-  email      String?   @unique
-  spotify_id String?
-  offset     Int?      @default(0)
-  myTracks   myTrack[]
-  votes      vote[]
+  id                 String    @id @unique @default(cuid())
+  email              String?   @unique
+  spotify_id         String?
+  offset             Int?      @default(0)
+  first_login        Boolean?  @default(true)
+  last_activity      DateTime? @db.DateTime(0)
+  total_library_size Int?
+  created_at         DateTime? @default(now()) @db.DateTime(0)
+  myTracks           myTrack[]
+  votes              vote[]
 }
 
 model vote {
-  id                 String  @id @unique @default(cuid())
+  id                 String    @id @unique @default(cuid())
   winner_id          String
   loser_id           String
   pre_rating_winner  Int?
@@ -53,13 +57,14 @@ model vote {
   post_rating_winner Int?
   post_rating_loser  Int?
   user_id            String?
-  loser              track   @relation("losers", fields: [loser_id], references: [spotify_id])
-  user               user?   @relation(fields: [user_id], references: [id])
-  winner             track   @relation("winners", fields: [winner_id], references: [spotify_id])
+  created_at         DateTime? @default(now()) @db.DateTime(0)
+  loser              track     @relation("losers", fields: [loser_id], references: [spotify_id])
+  user               user?     @relation(fields: [user_id], references: [id])
+  winner             track     @relation("winners", fields: [winner_id], references: [spotify_id])
 
+  @@unique([winner_id, loser_id, user_id], map: "vote_UN")
   @@index([loser_id], map: "vote_loser_id_fkey")
   @@index([user_id], map: "vote_user_id_fkey")
-  @@index([winner_id], map: "vote_winner_id_fkey")
 }
 
 model album {

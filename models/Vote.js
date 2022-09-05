@@ -1,6 +1,7 @@
 import Rating from "./Rating";
 import prisma from "../db";
 import serverSpotify from "../hooks/serverSpotify";
+import DatabaseConnector from "../database/connection";
 
 const rating = new Rating();
 
@@ -45,6 +46,22 @@ class Vote {
             calculatedRating?.post_winner_rating,
             calculatedRating?.post_loser_rating
         );
+    }
+
+    async getAllUnusedVotes(user_id) {
+        const query = `select t1.track_id as 't1', t2.track_id as 't2' from myTrack t1 
+                            join myTrack t2
+                            left join vote v on (v.user_id = ? 
+                                        and (v.winner_id = t1.track_id and v.loser_id = t2.track_id or v.loser_id = t1.track_id and v.winner_id = t2.track_id))
+                            where v.id is null AND t1.user_id = ? and t2.user_id = ?
+                            and t1.id != t2.id
+                            limit 2000`;
+
+        return await new DatabaseConnector().query(query, [
+            user_id,
+            user_id,
+            user_id,
+        ]);
     }
 
     async formatTracksForVote(tracks, session) {
