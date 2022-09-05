@@ -219,7 +219,7 @@ class MyTrack {
 
         const unvotedTracks = await this.getMyUnvotedTracks(); // get all unvoted tracks from database
 
-        if (!unvotedTracks) return [];
+        if (unvotedTracks === false) return [];
         var [randomTrack, unvotedTracksWithoutTheseTracks] =
             this.getRandomItemFromObjectAndRemoveIt(unvotedTracks); // get random track combination from unvoted tracks and remove it from the list of unvoted tracks
         const tracks = [randomTrack.t1, randomTrack.t2];
