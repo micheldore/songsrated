@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiUpvote, BiPlay, BiPause } from "react-icons/bi";
 import ReactAudioPlayer from "react-audio-player";
 
 export default function Song({ ...props }) {
     const [player, setSongPlayer] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(false);
 
     function changePlayState() {
-        if (isPlaying) {
-            player.pause();
-        } else {
-            player.play();
-        }
-        setIsPlaying(!isPlaying);
+        props.setParentPlayingStatus(!props.isPlaying);
     }
+
+    useEffect(() => {
+        if (player !== null) {
+            if (props.isPlaying) {
+                player.play();
+            } else {
+                player.pause();
+            }
+        }
+    }, [props.isPlaying]);
 
     const track = props.track;
     return (
@@ -30,7 +34,7 @@ export default function Song({ ...props }) {
                                     <img
                                         className="vote-play-button"
                                         src={
-                                            isPlaying
+                                            props.isPlaying
                                                 ? "pause_button.png"
                                                 : "play_button.png"
                                         }

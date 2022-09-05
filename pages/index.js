@@ -8,11 +8,15 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [track1, setTrack1] = useState({});
     const [track2, setTrack2] = useState({});
+    const [track1Playing, setTrack1Playing] = useState(false);
+    const [track2Playing, setTrack2Playing] = useState(false);
 
     async function getTracks() {
         fetch("/api/get_two_tracks")
             .then((res) => res.json())
             .then((data) => {
+                setTrack1Playing(false);
+                setTrack2Playing(false);
                 if (data.error) {
                     Swal.fire({
                         title:
@@ -31,6 +35,18 @@ const Home = () => {
                 }
             });
     }
+
+    useEffect(() => {
+        if (track1Playing) {
+            setTrack2Playing(false);
+        }
+    }, [track1Playing]);
+
+    useEffect(() => {
+        if (track2Playing) {
+            setTrack1Playing(false);
+        }
+    }, [track2Playing]);
 
     useEffect(() => {
         showLoadingAnimation();
@@ -127,8 +143,18 @@ const Home = () => {
                         className="md:flex md:flex-row display-block"
                         style={{ width: "60%" }}
                     >
-                        <Song track={track1} set={setWinner} />
-                        <Song track={track2} set={setWinner} />
+                        <Song
+                            track={track1}
+                            set={setWinner}
+                            isPlaying={track1Playing}
+                            setParentPlayingStatus={setTrack1Playing}
+                        />
+                        <Song
+                            track={track2}
+                            set={setWinner}
+                            isPlaying={track2Playing}
+                            setParentPlayingStatus={setTrack2Playing}
+                        />
                     </div>
 
                     <div
