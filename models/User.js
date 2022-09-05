@@ -2,7 +2,7 @@ import prisma from "../db";
 import MyTrack from "./MyTrack";
 
 class User {
-    async getAndOrCreateUser(email, spotify_id) {
+    async getAndOrCreateUser(email, spotify_id, sessionCheck = false) {
         const dbUser = await prisma.user.upsert({
             where: {
                 email: email,
@@ -14,10 +14,12 @@ class User {
             },
         });
 
-        // if (dbUser?.first_login || false) {
-        //     await this.changeFirstLogin(email, false);
-        //     await new MyTrack().getTopTracksFromSpotifyAndInsertInDb(true);
-        // } else await this.updateLastActivity(email);
+        if (!sessionCheck) {
+            if (dbUser?.first_login || false) {
+                await this.changeFirstLogin(email, false);
+                await new MyTrack().getTopTracksFromSpotifyAndInsertInDb(true);
+            } else await this.updateLastActivity(email);
+        }
 
         return dbUser;
     }

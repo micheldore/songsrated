@@ -57,7 +57,8 @@ export default NextAuth({
         async session({ session, token }) {
             const dbUser = await new User().getAndOrCreateUser(
                 session?.user?.email,
-                session?.user?.id
+                session?.user?.id,
+                true
             );
             session.user.accessToken = token.accessToken;
             session.user.refreshToken = token.refreshToken;
