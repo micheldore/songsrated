@@ -91,6 +91,27 @@ body {
     color: white;
 }
 
+.playlist-button {
+    left: 55px;
+    position: absolute;
+    top: 10px;
+    color: white;
+}
+
+.upvote-button {
+    left: 95px;
+    position: absolute;
+    top: 10px;
+    color: white;
+}
+
+.downvote-button {
+    left: 115px;
+    position: absolute;
+    top: 10px;
+    color: white;
+}
+
 .logout-button {
     right: 10px;
     position: absolute;

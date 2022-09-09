@@ -17,10 +17,24 @@ export default function Menu({ ...props }) {
                     href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
                 ></link>
             </Head>
-            <div>
+            <div className="pb-7">
                 <i
                     className="bx bx-md bxs-info-square info-button"
                     onClick={showInfoModal}
+                ></i>
+
+                <i
+                    className="bx bx-md bxs-playlist playlist-button"
+                    onClick={() => (window.location = "/ranking")}
+                ></i>
+
+                <i
+                    className="bx bx-md bxs-upvote upvote-button"
+                    onClick={() => (window.location = "/")}
+                ></i>
+                <i
+                    className="bx bx-md bxs-downvote downvote-button"
+                    onClick={() => (window.location = "/")}
                 ></i>
                 <i
                     className="bx bx-md bxs-exit logout-button"
