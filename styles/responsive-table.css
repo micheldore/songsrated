@@ -1,0 +1,52 @@
+.table {
+    width: 100%;
+    max-width: 100%;
+    background-color: white;
+  }
+  .table th,
+  .table td {
+    padding: 4px;
+    vertical-align: top;
+    border-top: 2px solid black;
+  }
+  .table thead th {
+    vertical-align: bottom;
+  }
+
+  .table thead{
+    border-radius: 10px !important;
+  }
+
+  .table tbody + tbody {
+    border-top: 4px solid black;
+    border-radius: 2px;
+  }
+  .table .table {
+    background-color: white;
+  }
+  
+  .table-sm th,
+  .table-sm td {
+    padding: 2px;
+  }
+  
+  .table-bordered {
+    border: 2px solid black;
+  }
+  .table-bordered th,
+  .table-bordered td {
+    border: 2px solid black;
+  }
+  .table-bordered thead th,
+  .table-bordered thead td {
+    border-bottom-width: 4px;
+  }
+  
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #524d4d;
+    color:white;
+  }
+
+  th, .table-striped tbody tr:nth-of-type(even) {
+    color:#524d4d;
+  }

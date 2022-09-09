@@ -19,7 +19,6 @@ class Rating {
     // Get first 100 tracks from the database
     async getTracks() {
         return await prisma.track.findMany({
-            take: 100,
             select: {
                 name: true,
                 artist: {

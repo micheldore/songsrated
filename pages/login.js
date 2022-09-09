@@ -3,9 +3,9 @@ import { getProviders, signIn } from "next-auth/react";
 function Login({ providers }) {
     return (
         <div className=" flex flex-col w-full justify-center items-center min-h-screen">
-            <span class="login-title">SONGSRATED</span>
-            <span class="login-subtitle">Rate your songs</span>
-            <p class="login-text">
+            <span className="login-title">SONGSRATED</span>
+            <span className="login-subtitle">Rate your songs</span>
+            <p className="login-text">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Pellentesque venenatis lorem nec justo pretium, quis feugiat
                 enim vulputate. Mauris a malesuada nibh. Curabitur id ligula

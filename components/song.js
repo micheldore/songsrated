@@ -26,7 +26,7 @@ export default function Song({ ...props }) {
                 <div className="flex flex-col rounded-sm">
                     <div>
                         <div className="flex flex-row items-center justify-between">
-                            <div class="img-gradient flex items-center">
+                            <div className="img-gradient flex items-center">
                                 <div
                                     className="vote-image-wrapper flex items-center"
                                     onClick={changePlayState}
@@ -41,7 +41,7 @@ export default function Song({ ...props }) {
                                         alt=""
                                     />
                                 </div>
-                                <div class="vote-title-wrapper">
+                                <div className="vote-title-wrapper">
                                     <span className="vote-song">
                                         {track?.name}
                                     </span>

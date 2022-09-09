@@ -14,32 +14,24 @@ export default function RankingTable({ ...props }) {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center table-responsive">
-            <table className="table-auto table-striped">
+        <div className="display-block p-5">
+            <table className="table table-striped table-responsive table-auto">
                 <thead>
                     <tr>
-                        <th className="px-4 py-2">Rank</th>
-                        <th className="px-4 py-2">Track</th>
-                        <th className="px-4 py-2">Artist</th>
-                        <th className="px-4 py-2">Rating</th>
+                        <th>Rank</th>
+                        <th>Track</th>
+                        <th>Artist</th>
+                        <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
                     {tracks &&
                         tracks?.map((track, index) => (
                             <tr key={index}>
-                                <td className="border px-4 py-2">
-                                    {index + 1}
-                                </td>
-                                <td className="border px-4 py-2">
-                                    {track?.name}
-                                </td>
-                                <td className="border px-4 py-2">
-                                    {track?.artist?.name}
-                                </td>
-                                <td className="border px-4 py-2">
-                                    {track?.rating}
-                                </td>
+                                <td>#{index + 1}</td>
+                                <td>{track?.name}</td>
+                                <td>{track?.artist?.name}</td>
+                                <td>{track?.rating}</td>
                             </tr>
                         ))}
                 </tbody>

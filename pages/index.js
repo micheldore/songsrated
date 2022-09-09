@@ -1,8 +1,7 @@
-import { signOut } from "next-auth/react";
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import Song from "../components/song";
 import Swal from "sweetalert2";
+import Menu from "../components/menu";
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -17,6 +16,7 @@ const Home = () => {
             .then((data) => {
                 setTrack1Playing(false);
                 setTrack2Playing(false);
+
                 if (data.error) {
                     Swal.fire({
                         title:
@@ -74,19 +74,6 @@ const Home = () => {
         });
     }
 
-    async function showInfoModal() {
-        Swal.fire({
-            title: "How to use this app",
-            html: `
-                <p>Here you can compare two songs from your Spotify library and choose which one you like more.</p><br>
-                <p>After you choose a song, a new pair of songs will be loaded.</p><br>
-                <p>When you have compared all the songs in your library, you will be notified.</p>
-            `,
-            icon: "info",
-            confirmButtonText: "Ok",
-        });
-    }
-
     async function setWinner(track_id) {
         setLoading(true);
         var winner_id = null;
@@ -115,29 +102,8 @@ const Home = () => {
     return (
         <>
             <div className="flex min-h-screen min-w-screen flex-col items-center justify-center">
-                <Head>
-                    <title>Songsrated</title>
-                    <link rel="icon" href="/favicon.ico" />
-                    <link
-                        rel="stylesheet"
-                        href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
-                    ></link>
-                </Head>
-
                 <main className="flex w-full flex-1 flex-col items-center justify-center pb-10 pt-10 text-center">
-                    <div>
-                        <i
-                            class="bx bx-md bxs-info-square info-button"
-                            onClick={showInfoModal}
-                        ></i>
-                        <i
-                            class="bx bx-md bxs-exit logout-button"
-                            onClick={signOut}
-                        ></i>
-                    </div>
-                    <h1 className="text-xl font-bold min-w-full px-0 vote-title">
-                        SONGSRATED
-                    </h1>
+                    <Menu></Menu>
 
                     <div
                         className="md:flex md:flex-row display-block"

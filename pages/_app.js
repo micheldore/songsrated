@@ -1,5 +1,6 @@
 import "inter-ui/inter.css";
 import "../styles/globals.css";
+import "../styles/responsive-table.css";
 import { SessionProvider } from "next-auth/react";
 import {
     RecoilRoot,
