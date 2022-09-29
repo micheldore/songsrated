@@ -10,31 +10,41 @@ body {
         #283027 2px,
         #232922 10%
       ); */
-      background: repeating-linear-gradient(
-  to right,
-  #232922,
-  #524d4d 2px,
-  #232922 2px,
-  #232922 20px
-);
+    background: repeating-linear-gradient(to right,
+            #232922,
+            #524d4d 2px,
+            #232922 2px,
+            #232922 20px);
+}
+
+.logo {
+    top: 1%;
+    position: absolute;
 }
 
 .img-gradient {
     position: relative;
-    display:inline-block;
-    background: -moz-linear-gradient(top, rgba(0,0,0,0.20) 0%, rgba(0,0,0,0.85) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left top, color-stop(0%,rgba(0,0,0,0.85)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* IE10+ */
-    background: linear-gradient(to top, rgba(0,0,0,0.20) 0%,rgba(0,0,0,0.85) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+    display: inline-block;
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left top, color-stop(0%, rgba(0, 0, 0, 0.85)), color-stop(100%, rgba(0, 0, 0, 0)));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    /* IE10+ */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a6000000', endColorstr='#00000000', GradientType=0);
+    /* IE6-9 */
 }
 
 .vote-artist {
     display: block;
     position: static;
-    color:white;
+    color: white;
     font-family: 'Inter', 'system-ui';
     font-style: normal;
     font-weight: 250;
@@ -133,7 +143,7 @@ body {
 
 .vote-song {
     display: block;
-    color:white;
+    color: white;
     font-family: 'Inter', 'system-ui';
     font-style: normal;
     font-weight: 550;
@@ -147,12 +157,13 @@ body {
     white-space: nowrap;
 }
 
-.vote-img{
+.vote-img {
     position: relative;
     z-index: -1;
     width: 100%;
 
 }
+
 .vote-title {
     left: 0%;
     right: 0%;
@@ -176,7 +187,7 @@ body {
     position: absolute;
     width: 80%;
     left: 10%;
-    top: 65%;
+    top: 78%;
 
     background: #000000;
     border-radius: 4px;
@@ -186,7 +197,7 @@ body {
     position: absolute;
     left: 23.66%;
     right: 23.66%;
-    top: 25%;
+    top: 26%;
     bottom: 0%;
 
     font-family: 'Inter', 'system-ui';
@@ -205,7 +216,7 @@ body {
     position: absolute;
     left: 0%;
     right: 0%;
-    top: 20%;
+    top: 23%;
 
     font-family: "Inter", "system-ui";
     font-style: normal;
@@ -220,12 +231,12 @@ body {
     color: #FFFFFF;
 }
 
-.data-text{
+.data-text {
     position: absolute;
     font-family: 'Inter', 'system-ui';
     font-style: normal;
     font-weight: 400;
-    top:90%;
+    top: 90%;
     font-size: 12px;
     line-height: 11px;
     text-align: center;
@@ -236,15 +247,16 @@ body {
     position: absolute;
     left: 16.56%;
     right: 16.56%;
-    top: 32.73%;
+    top: 35.73%;
 
-    font-family: 'Inter', 'system-ui';
+    font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 15px;
+    line-height: 20px;
 
     color: #FFFFFF;
+    background-color: #232922;
 }
 
 .playpause {

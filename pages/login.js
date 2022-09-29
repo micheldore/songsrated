@@ -40,9 +40,15 @@ function DataCollectionModal() {
 function Login({ providers }) {
     return (
         <div className="flex flex-col w-full justify-center items-center min-h-screen">
+            <img
+                src="/logo.png"
+                alt="Logo"
+                className="w-32 h-32 rounded-full logo"
+            />
+            {/* Logo */}
             <span className="login-title">SONGSRATED</span>
-            <span className="login-subtitle">What is the best song ever made?</span>
-            <div className="login-text text-left">
+            <span className="login-subtitle"><i>What's the best song ever made?</i></span>
+            <div className="login-text text-left border-white border-4 rounded-md p-4">
                 <p>
                     {/* Text to explain what this website does and why it is awesome: */}
                     This website allows you to compare two songs from your
@@ -54,7 +60,6 @@ function Login({ providers }) {
                     To get started, click on the button below and login with
                     your Spotify account.
                 </p>
-                <br />
             </div>
             <p class="data-text">
                 <a href="#" onClick={DataCollectionModal}>

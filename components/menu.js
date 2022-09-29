@@ -16,6 +16,9 @@ export default function Menu({ ...props }) {
                     rel="stylesheet"
                     href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
                 ></link>
+                <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin></link>
+                <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> </link>
             </Head>
             <div className="pb-7">
                 <i
