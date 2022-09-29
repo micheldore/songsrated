@@ -18,7 +18,7 @@ body {
 }
 
 .logo {
-    top: 1%;
+    top: 2%;
     position: absolute;
 }
 
@@ -197,7 +197,7 @@ body {
     position: absolute;
     left: 23.66%;
     right: 23.66%;
-    top: 26%;
+    top: 28%;
     bottom: 0%;
 
     font-family: 'Inter', 'system-ui';
@@ -216,7 +216,7 @@ body {
     position: absolute;
     left: 0%;
     right: 0%;
-    top: 23%;
+    top: 25%;
 
     font-family: "Inter", "system-ui";
     font-style: normal;
@@ -236,7 +236,7 @@ body {
     font-family: 'Inter', 'system-ui';
     font-style: normal;
     font-weight: 400;
-    top: 90%;
+    top: 94%;
     font-size: 12px;
     line-height: 11px;
     text-align: center;
