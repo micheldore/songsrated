@@ -176,7 +176,7 @@ body {
     position: absolute;
     width: 80%;
     left: 10%;
-    top: 55%;
+    top: 65%;
 
     background: #000000;
     border-radius: 4px;
@@ -220,6 +220,18 @@ body {
     color: #FFFFFF;
 }
 
+.data-text{
+    position: absolute;
+    font-family: 'Inter', 'system-ui';
+    font-style: normal;
+    font-weight: 400;
+    top:90%;
+    font-size: 12px;
+    line-height: 11px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 .login-text {
     position: absolute;
     left: 16.56%;
@@ -231,9 +243,6 @@ body {
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-
-    /* or 178% */
-    text-align: center;
 
     color: #FFFFFF;
 }
