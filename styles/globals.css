@@ -279,6 +279,18 @@ body {
     left: 42%;
 }
 
+@media screen and (max-width: 400px) and (max-height: 485px) {
+    .login-text {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .login-button {
+        bottom: 10vh !important;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .playpause {
         position: absolute;
