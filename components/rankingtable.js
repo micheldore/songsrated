@@ -20,8 +20,8 @@ export default function RankingTable({ ...props }) {
                     <tr>
                         <th>Rank</th>
                         <th>Track</th>
-                        <th>Artist</th>
-                        <th>Score</th>
+                        <th className="ranking-artist-name">Artist</th>
+                        <th className="ranking-rating">Score</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,8 +30,8 @@ export default function RankingTable({ ...props }) {
                             <tr key={index}>
                                 <td>#{index + 1}</td>
                                 <td>{track?.name}</td>
-                                <td>{track?.artist?.name}</td>
-                                <td>{track?.rating}</td>
+                                <td className="ranking-artist-name">{track?.artist?.name}</td>
+                                <td className="ranking-rating">{track?.rating}</td>
                             </tr>
                         ))}
                 </tbody>
