@@ -39,57 +39,59 @@ function DataCollectionModal() {
 
 function Login({ providers }) {
     return (
-        <div className="flex flex-col w-full justify-center items-center min-h-screen">
-            <img
-                src="/logo.png"
-                alt="Logo"
-                className="w-32 h-32 rounded-full logo"
-            />
-            {/* Logo */}
-            <span className="login-title">SONGSRATED</span>
-            <span className="login-subtitle"><i>What's the best song ever made?</i></span>
-            <div className="login-text text-left border-white border-4 rounded-md p-4">
-                <p>
-                    {/* Text to explain what this website does and why it is awesome: */}
-                    This website allows you to compare two songs from your
-                    Spotify music library.
+        <div className="w-full min-h-screen">
+            <div className="login-container">
+                <img
+                    src="/logo.png"
+                    alt="Logo"
+                    className="w-32 h-32 rounded-full logo"
+                />
+                {/* Logo */}
+                <span className="login-title">SONGSRATED</span>
+                <span className="login-subtitle"><i>What's the best song ever made?</i></span>
+                <div className="login-text text-left border-white border-4 rounded-md p-4">
+                    <p>
+                        {/* Text to explain what this website does and why it is awesome: */}
+                        This website allows you to compare two songs from your
+                        Spotify music library.
+                    </p>
+                    <br />
+                    <p>
+                        {/* Text to explain how to use this website: */}
+                        To get started, click on the button below and login with
+                        your Spotify account.
+                    </p>
+                </div>
+                <p className="data-text">
+                    <a href="#" onClick={DataCollectionModal}>
+                        Want to know more about how we use your data? Click here
+                    </a>
+                    .
                 </p>
-                <br />
-                <p>
-                    {/* Text to explain how to use this website: */}
-                    To get started, click on the button below and login with
-                    your Spotify account.
-                </p>
-            </div>
-            <p class="data-text">
-                <a href="#" onClick={DataCollectionModal}>
-                    Want to know more about how we use your data? Click here
-                </a>
-                .
-            </p>
 
-            {Object.values(providers).map((provider) => {
-                return (
-                    <div key={provider.name}>
-                        <button
-                            onClick={() =>
-                                signIn(provider.id, { callbackUrl: "/" })
-                            }
-                        >
-                            <div className="flex flex-row py-4 items-center justify-center rounded-sm bg-black w-80 login-button">
-                                <img
-                                    src="logo_spotify.png"
-                                    className="h-10 w-10"
-                                    alt=""
-                                />
-                                <span className="text-white pl-2">
-                                    Login with {provider?.name}
-                                </span>
-                            </div>
-                        </button>
-                    </div>
-                );
-            })}
+                {Object.values(providers).map((provider) => {
+                    return (
+                        <div key={provider.name}>
+                            <button
+                                onClick={() =>
+                                    signIn(provider.id, { callbackUrl: "/" })
+                                }
+                            >
+                                <div className="flex flex-row py-4 items-center justify-center rounded-sm bg-black w-80 login-button">
+                                    <img
+                                        src="logo_spotify.png"
+                                        className="h-10 w-10"
+                                        alt=""
+                                    />
+                                    <span className="text-white pl-2">
+                                        Login with {provider?.name}
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
