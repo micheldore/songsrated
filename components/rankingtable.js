@@ -10,14 +10,16 @@ export default function RankingTable({ ...props }) {
     const [filter_by, setFilterBy] = useState(null);
     const [filter_value, setFilterValue] = useState(null);
     const [total_pages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         fetchRanking();
     }, []);
 
     useEffect(() => {
         fetchRanking();
-    }, [page]);
+    }, [page, per_page, sort_by, sort_order, filter_by, filter_value]);
 
     function fetchRanking() {
         fetch(
@@ -31,7 +33,12 @@ export default function RankingTable({ ...props }) {
                     // setPerPage(data?.per_page ?? 10);
                     setTotalPages(data?.total_pages ?? 1);
                 }
+                setLoading(false);
             });
+        // Set loading false after 5 seconds
+        setTimeout(() => {
+            setLoading(false);
+        }, 5000);
     }
 
     function nextPage() {
@@ -58,11 +65,12 @@ export default function RankingTable({ ...props }) {
                 setFilterBy={setFilterBy}
                 setFilterValue={setFilterValue}
                 fetchRanking={fetchRanking}
+                loading={loading}
             />
-            <table className="table table-striped table-responsive table-auto">
+            <table className="table table-striped table-responsive table-auto text-left">
                 <thead>
                     <tr>
-                        <th className="min-w-fit">Rank</th>
+                        <th className="min-w-fit">#</th>
                         <th className="min-w-fit">Track</th>
                         <th className="min-w-fit ranking-artist-name">
                             Artist
@@ -82,7 +90,7 @@ export default function RankingTable({ ...props }) {
                                 <td className="ranking-song-name">
                                     {track?.name}
                                 </td>
-                                <td className="min-w-fit ranking-artist-name">
+                                <td className="ranking-artist-name">
                                     {track?.artist?.name}
                                 </td>
                                 <td className="min-w-fit ranking-album-name">

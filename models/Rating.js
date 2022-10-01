@@ -111,12 +111,12 @@ class Rating {
             } else if (sort_by === "release_date") {
                 results.sort((a, b) => {
                     if (sort_order === "asc") {
-                        return a.album.release_date.localeCompare(
-                            b.album.release_date
+                        return (
+                            new Date(a.release_date) < new Date(b.release_date)
                         );
                     } else {
-                        return b.album.release_date.localeCompare(
-                            a.album.release_date
+                        return (
+                            new Date(b.release_date) < new Date(a.release_date)
                         );
                     }
                 });

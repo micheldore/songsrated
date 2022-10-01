@@ -1,6 +1,9 @@
 export default function RankingFilter({ ...props }) {
     return (
-        <div className="flex flex-row justify-center text-white ranking-filter">
+        <div className="flex flex-row justify-center text-white ranking-filter relative">
+            {props.loading && (
+                <div className="overlay bg-slate-400 bg-opacity-75"></div>
+            )}
             <div className="flex flex-col m-2 page-size">
                 <label className="form-label">Page size</label>
                 <select
@@ -39,7 +42,7 @@ export default function RankingFilter({ ...props }) {
                     }}
                 >
                     <option value="rating">Rating</option>
-                    <option value="name">Name</option>
+                    <option value="name">Song</option>
                     <option value="artist">Artist</option>
                     <option value="album">Album</option>
                     <option value="release_date">Release date</option>
