@@ -5,7 +5,7 @@
   }
   .table th,
   .table td {
-    padding: 2px;
+    padding: 4px;
     vertical-align: top;
     border-top: 2px solid black;
   }
