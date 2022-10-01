@@ -279,6 +279,40 @@ body {
     left: 42%;
 }
 
+.ranking-filter {
+    background-color: #524d4d;
+    padding: 1%;
+}
+
+.ranking-song-name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 35vw;
+}
+
+@media screen and (max-width: 1200px) {
+    .filter-value, .filter-by, .clear-button {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .ranking-album-release-date {
+        display: none;
+    }
+
+    .filter-value, .filter-by, .clear-button {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .ranking-album-name, .page-size, .page-number, .filter-value, .filter-by, .clear-button {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 400px) and (max-height: 485px) {
     .login-text {
         display: none;

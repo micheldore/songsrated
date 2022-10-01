@@ -18,7 +18,7 @@ class Rating {
 
     // Get first 100 tracks from the database
     async getTracks() {
-        return await prisma.track.findMany({
+        var tracks = await prisma.track.findMany({
             select: {
                 name: true,
                 artist: {
@@ -38,6 +38,127 @@ class Rating {
                 rating: "desc",
             },
         });
+
+        // Add ranking number to each track
+        for (var i = 0; i < tracks.length; i++) {
+            tracks[i].rank = i + 1;
+        }
+
+        return tracks;
+    }
+
+    // Function to paginate the tracks
+    // The tracks can be sorted by rating, song name, artist name, album name or release date
+    // The tracks can be sorted in ascending or descending order
+    // The tracks can be filtered by rating, song name, artist name, album name or release date
+    async paginateTracks(
+        page,
+        per_page,
+        sort_by,
+        sort_order,
+        filter_by,
+        filter_value,
+        tracks
+    ) {
+        // Get the total number of tracks
+        const total = tracks.length;
+
+        // Get the total number of pages
+        const total_pages = Math.ceil(total / per_page);
+
+        // Get the start index of the tracks
+        const start_index = (page - 1) * per_page;
+
+        // Get the end index of the tracks
+        const end_index = page * per_page;
+
+        var results = tracks;
+
+        // Sort the tracks
+        if (sort_by) {
+            if (sort_by === "rating") {
+                results.sort((a, b) => {
+                    if (sort_order === "asc") {
+                        return a.rating - b.rating;
+                    } else {
+                        return b.rating - a.rating;
+                    }
+                });
+            } else if (sort_by === "name") {
+                results.sort((a, b) => {
+                    if (sort_order === "asc") {
+                        return a.name.localeCompare(b.name);
+                    } else {
+                        return b.name.localeCompare(a.name);
+                    }
+                });
+            } else if (sort_by === "artist") {
+                results.sort((a, b) => {
+                    if (sort_order === "asc") {
+                        return a.artist.name.localeCompare(b.artist.name);
+                    } else {
+                        return b.artist.name.localeCompare(a.artist.name);
+                    }
+                });
+            } else if (sort_by === "album") {
+                results.sort((a, b) => {
+                    if (sort_order === "asc") {
+                        return a.album.name.localeCompare(b.album.name);
+                    } else {
+                        return b.album.name.localeCompare(a.album.name);
+                    }
+                });
+            } else if (sort_by === "release_date") {
+                results.sort((a, b) => {
+                    if (sort_order === "asc") {
+                        return a.album.release_date.localeCompare(
+                            b.album.release_date
+                        );
+                    } else {
+                        return b.album.release_date.localeCompare(
+                            a.album.release_date
+                        );
+                    }
+                });
+            }
+        }
+
+        // Filter the tracks
+        if (filter_by) {
+            if (filter_by === "rating") {
+                results = results.filter((track) => {
+                    return track.rating === filter_value;
+                });
+            } else if (filter_by === "name") {
+                results = results.filter((track) => {
+                    return track.name === filter_value;
+                });
+            } else if (filter_by === "artist") {
+                results = results.filter((track) => {
+                    return track.artist.name === filter_value;
+                });
+            } else if (filter_by === "album") {
+                results = results.filter((track) => {
+                    return track.album.name === filter_value;
+                });
+            } else if (filter_by === "release_date") {
+                results = results.filter((track) => {
+                    return track.album.release_date === filter_value;
+                });
+            }
+        }
+
+        // Get the tracks for the current page
+        results = tracks.slice(start_index, end_index);
+
+        // Return the tracks for the current page
+        return {
+            page: page,
+            per_page: per_page,
+            total: total,
+            total_pages: total_pages,
+            data: results,
+        };
     }
 
     // Get the rating for a track from the database
