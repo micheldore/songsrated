@@ -1,12 +1,12 @@
 import { getSession } from "next-auth/react";
+import Track from "../../models/Track";
 import User from "../../models/User";
-import Vote from "../../models/Vote";
 const user = new User();
 var dbUser = null;
 
 export default async (req, res) => {
     // Check if method is post, if not return error
-    if (req.method !== "POST") {
+    if (req.method !== "GET") {
         res.statusCode = 405;
         res.end();
         return;
@@ -31,23 +31,23 @@ export default async (req, res) => {
         return;
     }
 
-    // Check if body contains needed ids, then get winner id and loser id from the request body
-    if (
-        !req.body?.winner_id ||
-        !req.body?.loser_id ||
-        !req.body?.winner_id.length ||
-        !req.body?.loser_id.length
-    ) {
+    if (!req.query?.id || !req.query?.id.length) {
         res.statusCode = 400;
-        res.json({ error: "Missing winner or loser id" });
+        res.json({ error: "Missing track id" });
         return;
     }
 
-    var winner_id = req.body?.winner_id;
-    var loser_id = req.body?.loser_id;
+    const trackInfo = await new Track().formatTrackForInfoPage(
+        req.query.id,
+        dbUser.id,
+        req
+    );
 
-    // Call vote function from models/Vote.js
-    await new Vote().vote(dbUser.id, winner_id, loser_id);
+    if (!trackInfo) {
+        res.statusCode = 404;
+        res.json({ error: "Track not found" });
+        return;
+    }
 
-    res.json({ success: true });
+    res.json(trackInfo);
 };

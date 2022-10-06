@@ -155,6 +155,28 @@ class Vote {
 
         return formattedTracks;
     }
+
+    async hasUserVotedForTrack(user_id, track_id) {
+        if (!user_id || !track_id) {
+            return false;
+        }
+
+        return (
+            (await prisma.vote.count({
+                where: {
+                    user_id: user_id,
+                    OR: [
+                        {
+                            winner_id: track_id,
+                        },
+                        {
+                            loser_id: track_id,
+                        },
+                    ],
+                },
+            })) > 0
+        );
+    }
 }
 
 export default Vote;
