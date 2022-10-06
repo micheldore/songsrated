@@ -6,7 +6,7 @@ export default function Menu({ ...props }) {
     return (
         <>
             <Head>
-                <title>Songsrated</title>
+                <title>SONGS RATED</title>
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1"
@@ -16,9 +16,16 @@ export default function Menu({ ...props }) {
                     rel="stylesheet"
                     href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
                 ></link>
-                <link rel="preconnect" href="https://fonts.googleapis.com"/>
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-                <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"/>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link
+                    rel="preconnect"
+                    href="https://fonts.gstatic.com"
+                    crossorigin
+                />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+                    rel="stylesheet"
+                />
             </Head>
             <div className="pb-7">
                 <i
@@ -45,7 +52,7 @@ export default function Menu({ ...props }) {
                 ></i>
             </div>
             <h1 className="text-xl font-bold min-w-full px-0 vote-title">
-                SONGSRATED
+                SONGS RATED
             </h1>
         </>
     );
