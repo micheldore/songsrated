@@ -53,14 +53,15 @@ class Vote {
         });
     }
 
-    async getAllUnusedVotes(user_id) {
+    async getAllUnusedVotes(user_id, limit = 2000) {
         const query = `select t1.track_id as 't1', t2.track_id as 't2' from myTrack t1 
                             join myTrack t2
                             left join vote v on (v.user_id = ? 
                                         and (v.winner_id = t1.track_id and v.loser_id = t2.track_id or v.loser_id = t1.track_id and v.winner_id = t2.track_id))
                             where v.id is null AND t1.user_id = ? and t2.user_id = ?
                             and t1.id != t2.id
-                            limit 2000`;
+                            order by RAND()
+                            limit ${limit}`;
 
         return await new DatabaseConnector().query(query, [
             user_id,
@@ -135,7 +136,9 @@ class Vote {
             formattedTrack.name = track.name;
             formattedTrack.artist_name = track.artists[0].name;
             formattedTrack.album_name = track.album.name;
-            formattedTrack.album_image = track.album.images[0].url;
+            formattedTrack.album_image = track?.album?.images.filter(
+                (album) => album.height === 640
+            )[0].url;
             formattedTrack.preview_url = track.preview_url;
             formattedTrack.release_date = new Date(track.album.release_date);
 
