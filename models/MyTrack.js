@@ -23,10 +23,13 @@ class MyTrack {
         return await getSession({ req });
     }
 
-    async getMyTopTracksFromSpotify(count = 50) {
+    async getMyTopTracksFromSpotify(count = 50, time_range = "short_term") {
         const session = await this.getSession();
         const spotifyApi = await serverSpotify(session);
-        return await spotifyApi.getMyTopTracks({ limit: count });
+        return await spotifyApi.getMyTopTracks({
+            limit: count,
+            time_range: time_range,
+        });
     }
 
     async getOffsetFromDatabase() {
@@ -80,12 +83,17 @@ class MyTrack {
         return formattedTracks;
     }
 
-    async getTopTracksFromSpotifyAndInsertInDb(topTracks = false) {
+    async getTopTracksFromSpotifyAndInsertInDb(
+        count = 50,
+        time_range = "short_term"
+    ) {
         var tracks = [];
-        if (topTracks) {
-            tracks = await this.getMyTopTracksFromSpotify();
-            tracks = this.track.getTracksFromResponse(tracks);
-        } else tracks = await this.getTracksFromSpotify();
+
+        tracks = await this.getMyTopTracksFromSpotify(count, time_range);
+        tracks = this.track.getTracksFromResponse(tracks);
+
+        if (!tracks || tracks.length == 0)
+            tracks = await this.getTracksFromSpotify();
 
         var promises = [];
         promises.push(this.insert(tracks));
@@ -182,37 +190,6 @@ class MyTrack {
         return [randomItem, obj];
     }
 
-    // Function that returns a list of all the combinations of two tracks from a list of tracks that have not been voted on by the user
-    async getMyUnvotedTracks() {
-        const session = await this.getSession();
-        const user_id = session?.user?.db_id;
-
-        var myTracks = myCache.get(`${user_id}tracks`);
-
-        if (
-            !myTracks ||
-            (typeof myTracks == "object" && Object.keys(myTracks).length == 0)
-        ) {
-            myTracks = await new Vote().getAllUnusedVotes(user_id);
-            if (
-                typeof myTracks == "object" &&
-                Object.keys(myTracks).length == 0
-            ) {
-                await this.getTopTracksFromSpotifyAndInsertInDb(true);
-                myTracks = await new Vote().getAllUnusedVotes(user_id);
-            }
-
-            if (Object.keys(myTracks).length == 0) {
-                myTracks = false;
-            }
-
-            myCache.set(`${user_id}tracks`, myTracks);
-            return myTracks;
-        } else {
-            return myTracks;
-        }
-    }
-
     async getTwoRandomUnvotedTracks() {
         const session = await this.getSession();
         const user_id = session?.user?.db_id;
@@ -227,6 +204,26 @@ class MyTrack {
         myCache.set(`${user_id}tracks`, unvotedTracksWithoutTheseTracks); // update cache with new list of unvoted tracks
 
         return (await new Vote().formatTracksForVote(tracks, session)) ?? [];
+    }
+
+    async getMyUnvotedTracks() {
+        const session = await this.getSession();
+        const user_id = session?.user?.db_id;
+
+        var myUnUsedVotes = myCache.get(`${user_id}tracks`);
+
+        if (!myUnUsedVotes || myUnUsedVotes.length == 0) {
+            const currentUnusedVotes = await new Vote().getAllUnusedVotes(
+                user_id,
+                10
+            );
+
+            if (currentUnusedVotes.length < 10) {
+                await this.getTopTracksFromSpotifyAndInsertInDb();
+            }
+            myUnUsedVotes = await new Vote().getAllUnusedVotes(user_id, 10);
+        }
+        return myUnUsedVotes;
     }
 }
 
