@@ -75,9 +75,13 @@ class Track {
             artist: artist?.name,
             album: album?.name,
             rating: rating,
+            duration: this.getTrackDuration(track?.duration_ms),
+            year: new Date(album?.release_date).getFullYear(),
             preview_url: track?.preview_url,
             user_has_voted: user_has_voted,
-            album_image: album?.images?.[0]?.url,
+            album_image: album?.images?.filter(
+                (image) => image?.height === 640
+            )[0].url,
         };
     }
 
@@ -90,6 +94,14 @@ class Track {
         });
 
         return rating?.rating ?? 1500;
+    }
+
+    // Function that returns track duration in minutes and seconds from milliseconds
+    getTrackDuration(duration) {
+        const minutes = Math.floor(duration / 60000);
+        const seconds = ((duration % 60000) / 1000).toFixed(0);
+        // Make it a readable format with leading zeros and s for seconds and m for minutes
+        return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     }
 
     // Function that returns a track from spotify

@@ -50,3 +50,7 @@
   th, .table-striped tbody tr:nth-of-type(even) {
     color:#524d4d;
   }
+  
+  .table-striped-vertical tbody tr:nth-of-type(odd) th {
+    color: white;
+  }
