@@ -12,18 +12,6 @@ export default async (req, res) => {
         return;
     }
 
-    //Get bearer token from request format it and set it to spotifyApi
-    // const bearerToken = req.headers["authorization"];
-    // if (bearerToken && bearerToken.startsWith("Bearer ")) {
-    //     const bearer = bearerToken.split(" ");
-    //     const token = bearer[1];
-    //     spotifyApi.setAccessToken(token);
-    // } else {
-    //     res.statusCode = 401;
-    //     res.json({ error: "Bearer token not found" });
-    //     return;
-    // }
-
     const session = await getSession({ req });
     if (!session?.user?.email) {
         res.statusCode = 403;
@@ -33,8 +21,7 @@ export default async (req, res) => {
 
     dbUser = await user.getAndOrCreateUser(
         session?.user?.email,
-        session?.user?.username,
-        true
+        session?.user?.username
     );
 
     if (!dbUser?.id) {

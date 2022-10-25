@@ -1,86 +1,85 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model myTrack {
-  id       Int     @id @default(autoincrement())
-  user_id  String?
-  track_id String?
-  track    track?  @relation(fields: [track_id], references: [spotify_id])
-  user     user?   @relation(fields: [user_id], references: [id])
+    id       Int     @id @default(autoincrement())
+    user_id  String?
+    track_id String?
+    track    track?  @relation(fields: [track_id], references: [spotify_id])
+    user     user?   @relation(fields: [user_id], references: [id])
 
-  @@unique([user_id, track_id], map: "myTrack_UN")
-  @@index([track_id], map: "myTrack_track_id_fkey")
-  @@index([user_id], map: "myTrack_user_id_fkey")
+    @@unique([user_id, track_id], map: "myTrack_UN")
+    @@index([track_id], map: "myTrack_track_id_fkey")
+    @@index([user_id], map: "myTrack_user_id_fkey")
 }
 
 model track {
-  spotify_id String    @id @unique
-  name       String?
-  rating     Int?
-  album_id   String?
-  artist_id  String?
-  album      album?    @relation(fields: [album_id], references: [spotify_id])
-  artist     artist?   @relation(fields: [artist_id], references: [spotify_id])
-  myTracks   myTrack[]
-  losers     vote[]    @relation("losers")
-  winners    vote[]    @relation("winners")
+    spotify_id String    @id @unique
+    name       String?
+    rating     Int?
+    album_id   String?
+    artist_id  String?
+    album      album?    @relation(fields: [album_id], references: [spotify_id])
+    artist     artist?   @relation(fields: [artist_id], references: [spotify_id])
+    myTracks   myTrack[]
+    losers     vote[]    @relation("losers")
+    winners    vote[]    @relation("winners")
 
-  @@index([album_id], map: "track_album_id_fkey")
-  @@index([artist_id], map: "track_artist_id_fkey")
+    @@index([album_id], map: "track_album_id_fkey")
+    @@index([artist_id], map: "track_artist_id_fkey")
 }
 
 model user {
-  id                 String    @id @unique @default(cuid())
-  email              String?   @unique
-  spotify_id         String?
-  offset             Int?      @default(0)
-  first_login        Boolean?  @default(true)
-  last_activity      DateTime? @db.DateTime(0)
-  total_library_size Int?
-  created_at         DateTime? @default(now()) @db.DateTime(0)
-  myTracks           myTrack[]
-  votes              vote[]
+    id                 String    @id @unique @default(cuid())
+    email              String?   @unique
+    spotify_id         String?
+    offset             Int?      @default(0)
+    first_login        Boolean?  @default(true)
+    total_library_size Int?
+    created_at         DateTime? @default(now()) @db.DateTime(0)
+    myTracks           myTrack[]
+    votes              vote[]
 }
 
 model vote {
-  id                 String    @id @unique @default(cuid())
-  winner_id          String
-  loser_id           String
-  pre_rating_winner  Int?
-  pre_rating_loser   Int?
-  post_rating_winner Int?
-  post_rating_loser  Int?
-  user_id            String?
-  created_at         DateTime? @default(now()) @db.DateTime(0)
-  loser              track     @relation("losers", fields: [loser_id], references: [spotify_id])
-  user               user?     @relation(fields: [user_id], references: [id])
-  winner             track     @relation("winners", fields: [winner_id], references: [spotify_id])
+    id                 String    @id @unique @default(cuid())
+    winner_id          String
+    loser_id           String
+    pre_rating_winner  Int?
+    pre_rating_loser   Int?
+    post_rating_winner Int?
+    post_rating_loser  Int?
+    user_id            String?
+    created_at         DateTime? @default(now()) @db.DateTime(0)
+    loser              track     @relation("losers", fields: [loser_id], references: [spotify_id])
+    user               user?     @relation(fields: [user_id], references: [id])
+    winner             track     @relation("winners", fields: [winner_id], references: [spotify_id])
 
-  @@unique([winner_id, loser_id, user_id], map: "vote_UN")
-  @@index([loser_id], map: "vote_loser_id_fkey")
-  @@index([user_id], map: "vote_user_id_fkey")
+    @@unique([winner_id, loser_id, user_id], map: "vote_UN")
+    @@index([loser_id], map: "vote_loser_id_fkey")
+    @@index([user_id], map: "vote_user_id_fkey")
 }
 
 model album {
-  spotify_id   String    @id @unique
-  name         String?
-  release_date DateTime?
-  artist_id    String?
-  artist       artist?   @relation(fields: [artist_id], references: [spotify_id])
-  tracks       track[]
+    spotify_id   String    @id @unique
+    name         String?
+    release_date DateTime?
+    artist_id    String?
+    artist       artist?   @relation(fields: [artist_id], references: [spotify_id])
+    tracks       track[]
 
-  @@index([artist_id], map: "album_artist_id_fkey")
+    @@index([artist_id], map: "album_artist_id_fkey")
 }
 
 model artist {
-  spotify_id String  @id @unique
-  name       String?
-  album      album[]
-  tracks     track[]
+    spotify_id String  @id @unique
+    name       String?
+    album      album[]
+    tracks     track[]
 }
