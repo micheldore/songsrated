@@ -7,53 +7,23 @@ export default function Menu({ ...props }) {
         <>
             <Head>
                 <title>SONGS RATED</title>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                ></meta>
+                <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
                 <link rel="icon" href="/favicon.ico" />
-                <link
-                    rel="stylesheet"
-                    href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
-                ></link>
+                <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"></link>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link
-                    rel="preconnect"
-                    href="https://fonts.gstatic.com"
-                    crossorigin
-                />
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-                    rel="stylesheet"
-                />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
             </Head>
             <div className="pb-7">
-                <i
-                    className="bx bx-md bxs-info-square info-button"
-                    onClick={showInfoModal}
-                ></i>
+                <i className="bx bx-md bxs-info-square info-button" onClick={showInfoModal}></i>
 
-                <i
-                    className="bx bx-md bxs-playlist playlist-button"
-                    onClick={() => (window.location = '/ranking')}
-                ></i>
+                <i className="bx bx-md bxs-playlist playlist-button" onClick={() => (window.location = '/ranking')}></i>
 
-                <i
-                    className="bx bx-md bxs-upvote upvote-button"
-                    onClick={() => (window.location = '/')}
-                ></i>
-                <i
-                    className="bx bx-md bxs-downvote downvote-button"
-                    onClick={() => (window.location = '/')}
-                ></i>
-                <i
-                    className="bx bx-md bxs-exit logout-button"
-                    onClick={signOut}
-                ></i>
+                <i className="bx bx-md bxs-upvote upvote-button" onClick={() => (window.location = '/')}></i>
+                <i className="bx bx-md bxs-downvote downvote-button" onClick={() => (window.location = '/')}></i>
+                <i className="bx bx-md bxs-exit logout-button" onClick={signOut}></i>
             </div>
-            <h1 className="text-xl font-bold min-w-full px-0 vote-title">
-                SONGS RATED
-            </h1>
+            <h1 className="text-xl font-bold min-w-full px-0 vote-title">SONGS RATED</h1>
         </>
     );
 

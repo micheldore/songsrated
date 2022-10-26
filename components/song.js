@@ -27,27 +27,16 @@ export default function Song({ ...props }) {
                     <div>
                         <div className="flex flex-row items-center justify-between">
                             <div className="img-gradient flex items-center">
-                                <div
-                                    className="vote-image-wrapper flex items-center"
-                                    onClick={changePlayState}
-                                >
+                                <div className="vote-image-wrapper flex items-center" onClick={changePlayState}>
                                     <img
                                         className="vote-play-button"
-                                        src={
-                                            props.isPlaying
-                                                ? 'pause_button.png'
-                                                : 'play_button.png'
-                                        }
+                                        src={props.isPlaying ? 'pause_button.png' : 'play_button.png'}
                                         alt=""
                                     />
                                 </div>
                                 <div className="vote-title-wrapper">
-                                    <span className="vote-song">
-                                        {track?.name}
-                                    </span>
-                                    <span className="vote-artist">
-                                        {track?.artist_name}
-                                    </span>
+                                    <span className="vote-song">{track?.name}</span>
+                                    <span className="vote-artist">{track?.artist_name}</span>
                                 </div>
                                 <div className="vote-button-wrapper flex items-center">
                                     <img
@@ -58,11 +47,7 @@ export default function Song({ ...props }) {
                                         src="pick_button.png"
                                     />
                                 </div>
-                                <img
-                                    className="vote-img"
-                                    onClick={changePlayState}
-                                    src={track?.album_image}
-                                />
+                                <img className="vote-img" onClick={changePlayState} src={track?.album_image} />
                             </div>
                         </div>
 

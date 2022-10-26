@@ -19,9 +19,7 @@ const Home = () => {
 
                 if (data.error) {
                     Swal.fire({
-                        title:
-                            data?.error ??
-                            'No more tracks to compare in the database',
+                        title: data?.error ?? 'No more tracks to compare in the database',
                         text: 'No more tracks to compare. Please come back tomorrow to compare more tracks.',
                         icon: 'info',
                         confirmButtonText: 'Ok',
@@ -105,10 +103,7 @@ const Home = () => {
                 <main className="flex w-full flex-1 flex-col items-center justify-center pb-10 pt-10 text-center">
                     <Menu></Menu>
 
-                    <div
-                        className="md:flex md:flex-row display-block"
-                        style={{ width: '60%' }}
-                    >
+                    <div className="md:flex md:flex-row display-block" style={{ width: '60%' }}>
                         <Song
                             track={track1}
                             set={setWinner}
@@ -128,9 +123,7 @@ const Home = () => {
                         onClick={() => (window.location = '/ranking')}
                     >
                         <img src="arrow.png" />
-                        <span className="pl-2 text-white return-text">
-                            Return to rating
-                        </span>
+                        <span className="pl-2 text-white return-text">Return to rating</span>
                     </div>
                 </main>
             </div>

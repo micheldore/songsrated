@@ -26,6 +26,7 @@ class MyTrack {
     async getMyTopTracksFromSpotify(count = 50, time_range = 'short_term') {
         const session = await this.getSession();
         const spotifyApi = await serverSpotify(session);
+
         return await spotifyApi.getMyTopTracks({
             limit: count,
             time_range: time_range,
@@ -48,9 +49,8 @@ class MyTrack {
 
     async setOffsetInDatabase(offset) {
         // Check if offset is higher than 10000 and lower than 0, if so reset to 0
-        if (offset > 10000 || offset < 0) {
-            offset = 0;
-        }
+        if (offset > 10000 || offset < 0) offset = 0;
+
         const session = await this.getSession();
 
         return await prisma.user.update({
@@ -72,9 +72,10 @@ class MyTrack {
             offset: offset,
         });
         const len = tracks?.body?.items?.length ?? 0;
-        await this.setOffsetInDatabase(offset + Math.min(len, 50));
-        var formattedTracks = [];
 
+        await this.setOffsetInDatabase(offset + Math.min(len, 50));
+
+        var formattedTracks = [];
         for (const track of tracks?.body?.items) {
             if (track?.track?.id && track?.track?.preview_url) {
                 formattedTracks.push(track?.track);
@@ -83,17 +84,13 @@ class MyTrack {
         return formattedTracks;
     }
 
-    async getTopTracksFromSpotifyAndInsertInDb(
-        count = 50,
-        time_range = 'short_term'
-    ) {
+    async getTopTracksFromSpotifyAndInsertInDb(count = 50, time_range = 'short_term') {
         var tracks = [];
 
         tracks = await this.getMyTopTracksFromSpotify(count, time_range);
         tracks = this.track.getTracksFromResponse(tracks);
 
-        if (!tracks || tracks.length == 0)
-            tracks = await this.getTracksFromSpotify();
+        if (!tracks || tracks.length == 0) tracks = await this.getTracksFromSpotify();
 
         var promises = [];
         promises.push(this.insert(tracks));
@@ -116,9 +113,7 @@ class MyTrack {
     async formatTracksToMyTracksForDatabase(tracks) {
         var formattedMyTracks = [];
 
-        for (const track of tracks) {
-            formattedMyTracks.push(await this.formatMyTrackForDatabase(track));
-        }
+        for (const track of tracks) formattedMyTracks.push(await this.formatMyTrackForDatabase(track));
 
         return formattedMyTracks;
     }
@@ -141,9 +136,7 @@ class MyTrack {
 
     async checkIfTracksHaveNotVoted(tracks) {
         // check if tracks contain two tracks
-        if (tracks.length != 2) {
-            return false;
-        }
+        if (tracks.length != 2) return false;
 
         const [track1, track2] = tracks;
         const session = await this.getSession();
@@ -187,6 +180,7 @@ class MyTrack {
         var randomKey = keys[randomIndex];
         var randomItem = obj[randomKey];
         delete obj[randomKey];
+
         return [randomItem, obj];
     }
 
@@ -194,36 +188,35 @@ class MyTrack {
         const session = await this.getSession();
         const user_id = session?.user?.db_id;
 
-        const unvotedTracks = await this.getMyUnvotedTracks(); // get all unvoted tracks from database
+        const unusedVotes = await this.getMyUnusedVotes(); // get all unvoted tracks from database
 
-        if (unvotedTracks === false) return [];
-        var [randomTrack, unvotedTracksWithoutTheseTracks] =
-            this.getRandomItemFromObjectAndRemoveIt(unvotedTracks); // get random track combination from unvoted tracks and remove it from the list of unvoted tracks
-        const tracks = [randomTrack.t1, randomTrack.t2];
+        if (unusedVotes === false) return [];
 
-        myCache.set(`${user_id}tracks`, unvotedTracksWithoutTheseTracks); // update cache with new list of unvoted tracks
+        // get random track combination from unvoted tracks and remove it from the list of unvoted tracks
+        var [newVote, unvotedTracksWithoutNewVote] = this.getRandomItemFromObjectAndRemoveIt(unusedVotes);
+
+        const tracks = [newVote.t1, newVote.t2];
+
+        myCache.set(`${user_id}tracks`, unvotedTracksWithoutNewVote); // update cache with new list of unvoted tracks
 
         return (await new Vote().formatTracksForVote(tracks, session)) ?? [];
     }
 
-    async getMyUnvotedTracks() {
+    async getMyUnusedVotes() {
         const session = await this.getSession();
         const user_id = session?.user?.db_id;
 
-        var myUnUsedVotes = myCache.get(`${user_id}tracks`);
+        var myUnusedVotes = myCache.get(`${user_id}tracks`);
 
-        if (!myUnUsedVotes || myUnUsedVotes.length == 0) {
-            const currentUnusedVotes = await new Vote().getAllUnusedVotes(
-                user_id,
-                10
-            );
+        if (!myUnusedVotes || myUnusedVotes.length == 0) {
+            const currentUnusedVotes = await new Vote().getAllUnusedVotes(user_id, 10);
 
             if (currentUnusedVotes.length < 10) {
                 await this.getTopTracksFromSpotifyAndInsertInDb();
             }
-            myUnUsedVotes = await new Vote().getAllUnusedVotes(user_id, 10);
+            myUnusedVotes = await new Vote().getAllUnusedVotes(user_id, 10);
         }
-        return myUnUsedVotes;
+        return myUnusedVotes;
     }
 }
 

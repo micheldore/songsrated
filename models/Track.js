@@ -26,8 +26,7 @@ class Track {
     formatTracksForDatabase(tracks) {
         var formattedTracks = [];
 
-        for (const track of tracks)
-            formattedTracks.push(this.formatTrackForDatabase(track));
+        for (const track of tracks) formattedTracks.push(this.formatTrackForDatabase(track));
         return formattedTracks;
     }
 

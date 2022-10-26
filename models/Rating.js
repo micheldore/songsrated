@@ -40,9 +40,7 @@ class Rating {
         });
 
         // Add ranking number to each track
-        for (var i = 0; i < tracks.length; i++) {
-            tracks[i].rank = i + 1;
-        }
+        for (var i = 0; i < tracks.length; i++) tracks[i].rank = i + 1;
 
         return tracks;
     }
@@ -51,15 +49,7 @@ class Rating {
     // The tracks can be sorted by rating, song name, artist name, album name or release date
     // The tracks can be sorted in ascending or descending order
     // The tracks can be filtered by rating, song name, artist name, album name or release date
-    async paginateTracks(
-        page,
-        per_page,
-        sort_by,
-        sort_order,
-        filter_by,
-        filter_value,
-        tracks
-    ) {
+    async paginateTracks(page, per_page, sort_by, sort_order, filter_by, filter_value, tracks) {
         // Get the total number of tracks
         const total = tracks.length;
 
@@ -111,13 +101,9 @@ class Rating {
             } else if (sort_by === 'release_date') {
                 results.sort((a, b) => {
                     if (sort_order === 'asc') {
-                        return (
-                            new Date(a.release_date) < new Date(b.release_date)
-                        );
+                        return new Date(a.release_date) < new Date(b.release_date);
                     } else {
-                        return (
-                            new Date(b.release_date) < new Date(a.release_date)
-                        );
+                        return new Date(b.release_date) < new Date(a.release_date);
                     }
                 });
             }
@@ -172,9 +158,7 @@ class Rating {
             },
         });
 
-        if (!track) {
-            return 0;
-        }
+        if (!track) return 0;
 
         return track?.rating ?? 0;
     }
@@ -196,25 +180,11 @@ class Rating {
         const pre_winner_rating = await this.getRating(winner_id);
         const pre_loser_rating = await this.getRating(loser_id);
 
-        let odds_winner_winning = this.elo.expectedScore(
-            pre_winner_rating,
-            pre_loser_rating
-        );
-        var new_winner_rating = this.elo.newRating(
-            odds_winner_winning,
-            1.0,
-            pre_winner_rating
-        );
+        let odds_winner_winning = this.elo.expectedScore(pre_winner_rating, pre_loser_rating);
+        var new_winner_rating = this.elo.newRating(odds_winner_winning, 1.0, pre_winner_rating);
 
-        let odds_loser_winning = this.elo.expectedScore(
-            pre_loser_rating,
-            pre_winner_rating
-        );
-        var new_loser_rating = this.elo.newRating(
-            odds_loser_winning,
-            0.0,
-            pre_loser_rating
-        );
+        let odds_loser_winning = this.elo.expectedScore(pre_loser_rating, pre_winner_rating);
+        var new_loser_rating = this.elo.newRating(odds_loser_winning, 0.0, pre_loser_rating);
 
         await this.setRating(winner_id, new_winner_rating);
         await this.setRating(loser_id, new_loser_rating);

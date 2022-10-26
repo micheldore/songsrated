@@ -19,10 +19,7 @@ export default async (req, res) => {
         return;
     }
 
-    dbUser = await user.getAndOrCreateUser(
-        session?.user?.email,
-        session?.user?.username
-    );
+    dbUser = await user.getAndOrCreateUser(session?.user?.email, session?.user?.username);
 
     if (!dbUser?.id) {
         res.statusCode = 403;
@@ -31,12 +28,7 @@ export default async (req, res) => {
     }
 
     // Check if body contains needed ids, then get winner id and loser id from the request body
-    if (
-        !req.body?.winner_id ||
-        !req.body?.loser_id ||
-        !req.body?.winner_id.length ||
-        !req.body?.loser_id.length
-    ) {
+    if (!req.body?.winner_id || !req.body?.loser_id || !req.body?.winner_id.length || !req.body?.loser_id.length) {
         res.statusCode = 400;
         res.json({ error: 'Missing winner or loser id' });
         return;

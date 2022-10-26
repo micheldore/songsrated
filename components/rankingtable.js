@@ -72,13 +72,9 @@ export default function RankingTable({ ...props }) {
                     <tr>
                         <th className="min-w-fit">#</th>
                         <th className="min-w-fit">Track</th>
-                        <th className="min-w-fit ranking-artist-name">
-                            Artist
-                        </th>
+                        <th className="min-w-fit ranking-artist-name">Artist</th>
                         <th className="min-w-fit ranking-album-name">Album</th>
-                        <th className="min-w-fit ranking-album-release-date w-100">
-                            Release date
-                        </th>
+                        <th className="min-w-fit ranking-album-release-date w-100">Release date</th>
                         <th className="min-w-fit ranking-rating">Score</th>
                     </tr>
                 </thead>
@@ -87,23 +83,13 @@ export default function RankingTable({ ...props }) {
                         tracks?.map((track, index) => (
                             <tr key={index}>
                                 <td>#{track?.rank}</td>
-                                <td className="ranking-song-name">
-                                    {track?.name}
-                                </td>
-                                <td className="ranking-artist-name">
-                                    {track?.artist?.name}
-                                </td>
-                                <td className="min-w-fit ranking-album-name">
-                                    {track?.album?.name}
-                                </td>
+                                <td className="ranking-song-name">{track?.name}</td>
+                                <td className="ranking-artist-name">{track?.artist?.name}</td>
+                                <td className="min-w-fit ranking-album-name">{track?.album?.name}</td>
                                 <td className="min-w-fit ranking-album-release-date">
-                                    {new Date(
-                                        track?.album?.release_date
-                                    ).toLocaleDateString()}
+                                    {new Date(track?.album?.release_date).toLocaleDateString()}
                                 </td>
-                                <td className="min-w-fit ranking-rating">
-                                    {track?.rating}
-                                </td>
+                                <td className="min-w-fit ranking-rating">{track?.rating}</td>
                             </tr>
                         ))}
                 </tbody>

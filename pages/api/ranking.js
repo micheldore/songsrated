@@ -31,15 +31,5 @@ export default async (req, res) => {
     const filter_by = req.query.filter_by ?? null;
     const filter_value = req.query.filter_value ?? null;
 
-    res.json(
-        await rating.paginateTracks(
-            page,
-            per_page,
-            sort_by,
-            sort_order,
-            filter_by,
-            filter_value,
-            tracks
-        )
-    );
+    res.json(await rating.paginateTracks(page, per_page, sort_by, sort_order, filter_by, filter_value, tracks));
 };

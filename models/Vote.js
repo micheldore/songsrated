@@ -34,11 +34,7 @@ class Vote {
 
     // Function that votes for a track based on user_id and winner_id and loser_id using the Rating model, then call the create function to create a record in the database
     async vote(user_id, winner_id, loser_id) {
-        const calculatedRating =
-            await rating.calculateNewRatingAndSetToDatabase(
-                winner_id,
-                loser_id
-            );
+        const calculatedRating = await rating.calculateNewRatingAndSetToDatabase(winner_id, loser_id);
 
         await this.create(
             user_id,
@@ -63,11 +59,7 @@ class Vote {
                             order by RAND()
                             limit ${limit}`;
 
-        return await new DatabaseConnector().query(query, [
-            user_id,
-            user_id,
-            user_id,
-        ]);
+        return await new DatabaseConnector().query(query, [user_id, user_id, user_id]);
     }
 
     // Function that returns the vote count of the user for today using the user_id and prisma
@@ -136,9 +128,7 @@ class Vote {
             formattedTrack.name = track.name;
             formattedTrack.artist_name = track.artists[0].name;
             formattedTrack.album_name = track.album.name;
-            formattedTrack.album_image = track?.album?.images.filter(
-                (album) => album.height === 640
-            )[0].url;
+            formattedTrack.album_image = track?.album?.images.filter((album) => album.height === 640)[0].url;
             formattedTrack.preview_url = track.preview_url;
             formattedTrack.release_date = new Date(track.album.release_date);
 
