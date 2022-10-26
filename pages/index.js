@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import Song from "../components/song";
-import Swal from "sweetalert2";
-import Menu from "../components/menu";
+import { useEffect, useState } from 'react';
+import Song from '../components/song';
+import Swal from 'sweetalert2';
+import Menu from '../components/menu';
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ const Home = () => {
     const [track2Playing, setTrack2Playing] = useState(false);
 
     async function getTracks() {
-        fetch("/api/get_two_tracks")
+        fetch('/api/get_two_tracks')
             .then((res) => res.json())
             .then((data) => {
                 setTrack1Playing(false);
@@ -21,11 +21,11 @@ const Home = () => {
                     Swal.fire({
                         title:
                             data?.error ??
-                            "No more tracks to compare in the database",
-                        text: "No more tracks to compare. Please come back tomorrow to compare more tracks.",
-                        icon: "info",
-                        confirmButtonText: "Ok",
-                        width: "80%",
+                            'No more tracks to compare in the database',
+                        text: 'No more tracks to compare. Please come back tomorrow to compare more tracks.',
+                        icon: 'info',
+                        confirmButtonText: 'Ok',
+                        width: '80%',
                     });
                 } else {
                     const [track1, track2] = data;
@@ -64,7 +64,7 @@ const Home = () => {
     async function showLoadingAnimation() {
         setLoading(true);
         Swal.fire({
-            title: "Loading new songs",
+            title: 'Loading new songs',
             html: "Alright! Let's compare some new songs",
             didOpen: () => {
                 Swal.showLoading();
@@ -87,10 +87,10 @@ const Home = () => {
             loser_id = track1?.spotify_id;
         }
 
-        fetch("api/vote", {
-            method: "POST",
+        fetch('api/vote', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 winner_id: winner_id,
@@ -107,7 +107,7 @@ const Home = () => {
 
                     <div
                         className="md:flex md:flex-row display-block"
-                        style={{ width: "60%" }}
+                        style={{ width: '60%' }}
                     >
                         <Song
                             track={track1}
@@ -125,7 +125,7 @@ const Home = () => {
 
                     <div
                         className="flex flex-row items-center justify-evenly"
-                        onClick={() => (window.location = "/ranking")}
+                        onClick={() => (window.location = '/ranking')}
                     >
                         <img src="arrow.png" />
                         <span className="pl-2 text-white return-text">

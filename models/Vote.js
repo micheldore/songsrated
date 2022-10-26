@@ -1,9 +1,9 @@
-import Rating from "./Rating";
-import prisma from "../db";
-import serverSpotify from "../hooks/serverSpotify";
-import DatabaseConnector from "../database/connection";
+import Rating from './Rating';
+import prisma from '../db';
+import serverSpotify from '../hooks/serverSpotify';
+import DatabaseConnector from '../database/connection';
 // setup node cache
-const NodeCache = require("node-cache");
+const NodeCache = require('node-cache');
 const myCache = new NodeCache({ stdTTL: 1200 });
 
 const rating = new Rating();

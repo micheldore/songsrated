@@ -1,4 +1,4 @@
-import prisma from "../db";
+import prisma from '../db';
 
 class Track {
     // Function that formats a track object from spotify for insertion into the database

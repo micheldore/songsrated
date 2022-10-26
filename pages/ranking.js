@@ -1,6 +1,6 @@
-import Head from "next/head";
-import Menu from "../components/menu";
-import RankingTable from "../components/rankingtable";
+import Head from 'next/head';
+import Menu from '../components/menu';
+import RankingTable from '../components/rankingtable';
 
 const Ranking = () => {
     return (

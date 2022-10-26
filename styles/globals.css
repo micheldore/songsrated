@@ -10,27 +10,55 @@ body {
         #283027 2px,
         #232922 10%
       ); */
-    background: repeating-linear-gradient(to right,
-            #232922,
-            #524d4d 2px,
-            #232922 2px,
-            #232922 20px);
+    background: repeating-linear-gradient(
+        to right,
+        #232922,
+        #524d4d 2px,
+        #232922 2px,
+        #232922 20px
+    );
 }
 
 .img-gradient {
     position: relative;
     display: inline-block;
-    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    background: -moz-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.85) 100%
+    );
     /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left top, color-stop(0%, rgba(0, 0, 0, 0.85)), color-stop(100%, rgba(0, 0, 0, 0)));
+    background: -webkit-gradient(
+        linear,
+        left top,
+        left top,
+        color-stop(0%, rgba(0, 0, 0, 0.85)),
+        color-stop(100%, rgba(0, 0, 0, 0))
+    );
     /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    background: -webkit-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.85) 100%
+    );
     /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    background: -o-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.85) 100%
+    );
     /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    background: -ms-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.85) 100%
+    );
     /* IE10+ */
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.85) 100%);
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0.85) 100%
+    );
     /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a6000000', endColorstr='#00000000', GradientType=0);
     /* IE6-9 */
@@ -156,7 +184,6 @@ body {
     position: relative;
     z-index: -1;
     width: 100%;
-
 }
 
 .vote-title {
@@ -175,7 +202,7 @@ body {
     text-align: center;
     letter-spacing: 0.45em;
 
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .login-container {
@@ -196,7 +223,7 @@ body {
     width: 100% !important;
     display: block;
     margin: auto;
-    font-family: "Inter", "system-ui";
+    font-family: 'Inter', 'system-ui';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -206,9 +233,8 @@ body {
     letter-spacing: 0.45em;
     text-align: center;
 
-    color: #FFFFFF;
+    color: #ffffff;
 }
-
 
 .login-subtitle {
     position: relative;
@@ -225,7 +251,7 @@ body {
     /* identical to box height */
     text-align: center;
 
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .login-text {
@@ -243,7 +269,7 @@ body {
     font-size: 15px;
     line-height: 20px;
 
-    color: #FFFFFF;
+    color: #ffffff;
     background-color: #232922;
 }
 
@@ -270,7 +296,7 @@ body {
     font-size: 12px;
     line-height: 11px;
     text-align: center;
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .playpause {
@@ -304,11 +330,13 @@ body {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width:  30vw !important;
+    max-width: 30vw !important;
 }
 
 @media screen and (max-width: 1200px) {
-    .filter-value, .filter-by, .clear-button {
+    .filter-value,
+    .filter-by,
+    .clear-button {
         display: none;
     }
 }
@@ -318,13 +346,20 @@ body {
         display: none;
     }
 
-    .filter-value, .filter-by, .clear-button {
+    .filter-value,
+    .filter-by,
+    .clear-button {
         display: none;
     }
 }
 
 @media screen and (max-width: 800px) {
-    .ranking-album-name, .page-size, .page-number, .filter-value, .filter-by, .clear-button {
+    .ranking-album-name,
+    .page-size,
+    .page-number,
+    .filter-value,
+    .filter-by,
+    .clear-button {
         display: none;
     }
 }

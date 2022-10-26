@@ -1,6 +1,6 @@
-import { signOut } from "next-auth/react";
-import Head from "next/head";
-import Swal from "sweetalert2";
+import { signOut } from 'next-auth/react';
+import Head from 'next/head';
+import Swal from 'sweetalert2';
 
 export default function Menu({ ...props }) {
     return (
@@ -35,16 +35,16 @@ export default function Menu({ ...props }) {
 
                 <i
                     className="bx bx-md bxs-playlist playlist-button"
-                    onClick={() => (window.location = "/ranking")}
+                    onClick={() => (window.location = '/ranking')}
                 ></i>
 
                 <i
                     className="bx bx-md bxs-upvote upvote-button"
-                    onClick={() => (window.location = "/")}
+                    onClick={() => (window.location = '/')}
                 ></i>
                 <i
                     className="bx bx-md bxs-downvote downvote-button"
-                    onClick={() => (window.location = "/")}
+                    onClick={() => (window.location = '/')}
                 ></i>
                 <i
                     className="bx bx-md bxs-exit logout-button"
@@ -59,14 +59,14 @@ export default function Menu({ ...props }) {
 
     async function showInfoModal() {
         Swal.fire({
-            title: "How to use this app",
+            title: 'How to use this app',
             html: `
                 <p>Here you can compare two songs from your Spotify library and choose which one you like more.</p><br>
                 <p>After you choose a song, a new pair of songs will be loaded.</p><br>
                 <p>When you have compared all the songs in your library, you will be notified.</p>
             `,
-            icon: "info",
-            confirmButtonText: "Ok",
+            icon: 'info',
+            confirmButtonText: 'Ok',
         });
     }
 }

@@ -1,13 +1,13 @@
-import { getSession } from "next-auth/react";
-import Album from "./Album";
-import Track from "./Track";
-import Artist from "./Artist";
-import prisma from "../db";
-import serverSpotify from "../hooks/serverSpotify";
-import DatabaseConnector from "../database/connection";
-import Vote from "./Vote";
+import { getSession } from 'next-auth/react';
+import Album from './Album';
+import Track from './Track';
+import Artist from './Artist';
+import prisma from '../db';
+import serverSpotify from '../hooks/serverSpotify';
+import DatabaseConnector from '../database/connection';
+import Vote from './Vote';
 
-const NodeCache = require("node-cache");
+const NodeCache = require('node-cache');
 const myCache = new NodeCache({ stdTTL: 200 });
 
 class MyTrack {
@@ -23,7 +23,7 @@ class MyTrack {
         return await getSession({ req });
     }
 
-    async getMyTopTracksFromSpotify(count = 50, time_range = "short_term") {
+    async getMyTopTracksFromSpotify(count = 50, time_range = 'short_term') {
         const session = await this.getSession();
         const spotifyApi = await serverSpotify(session);
         return await spotifyApi.getMyTopTracks({
@@ -85,7 +85,7 @@ class MyTrack {
 
     async getTopTracksFromSpotifyAndInsertInDb(
         count = 50,
-        time_range = "short_term"
+        time_range = 'short_term'
     ) {
         var tracks = [];
 

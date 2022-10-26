@@ -1,10 +1,10 @@
-import { getProviders, signIn } from "next-auth/react";
-import Swal from "sweetalert2";
+import { getProviders, signIn } from 'next-auth/react';
+import Swal from 'sweetalert2';
 
 // Function that generates a modal with a message that explains the data that is being collected
 function DataCollectionModal() {
     Swal.fire({
-        title: "Data Collection",
+        title: 'Data Collection',
         html: `
             <p class='text-left'>
             We need your Spotify account to get your music library and to
@@ -76,7 +76,7 @@ function Login({ providers }) {
                         <div key={provider.name}>
                             <button
                                 onClick={() =>
-                                    signIn(provider.id, { callbackUrl: "/" })
+                                    signIn(provider.id, { callbackUrl: '/' })
                                 }
                             >
                                 <div className="flex flex-row py-4 items-center justify-center rounded-sm bg-black w-80 login-button">

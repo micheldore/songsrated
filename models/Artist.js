@@ -1,5 +1,5 @@
-import prisma from "../db";
-import Track from "./Track";
+import prisma from '../db';
+import Track from './Track';
 
 class Artist {
     constructor() {

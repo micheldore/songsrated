@@ -1,5 +1,5 @@
-import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
+import { NextResponse } from 'next/server';
 
 export async function middleware(request) {
     const token = await getToken({
@@ -11,7 +11,7 @@ export async function middleware(request) {
 
     if (pathname.includes(`/api/auth`) || token) {
         return NextResponse.next();
-    } else if (pathname == "/") {
-        return NextResponse.rewrite(new URL("/login", request.url));
+    } else if (pathname == '/') {
+        return NextResponse.rewrite(new URL('/login', request.url));
     }
 }

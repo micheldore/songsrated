@@ -1,4 +1,4 @@
-import prisma from "../db";
+import prisma from '../db';
 
 class User {
     async getAndOrCreateUser(email, spotify_id) {

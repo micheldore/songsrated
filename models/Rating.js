@@ -1,4 +1,4 @@
-const Elo = require("arpad");
+const Elo = require('arpad');
 const uscf = {
     default: 32,
     1800: 28,
@@ -7,7 +7,7 @@ const uscf = {
 };
 const min_score = 100;
 const max_score = 10000;
-import prisma from "../db";
+import prisma from '../db';
 
 class Rating {
     elo = null;
@@ -35,7 +35,7 @@ class Rating {
                 rating: true,
             },
             orderBy: {
-                rating: "desc",
+                rating: 'desc',
             },
         });
 
@@ -76,41 +76,41 @@ class Rating {
 
         // Sort the tracks
         if (sort_by) {
-            if (sort_by === "rating") {
+            if (sort_by === 'rating') {
                 results.sort((a, b) => {
-                    if (sort_order === "asc") {
+                    if (sort_order === 'asc') {
                         return a.rating - b.rating;
                     } else {
                         return b.rating - a.rating;
                     }
                 });
-            } else if (sort_by === "name") {
+            } else if (sort_by === 'name') {
                 results.sort((a, b) => {
-                    if (sort_order === "asc") {
+                    if (sort_order === 'asc') {
                         return a.name.localeCompare(b.name);
                     } else {
                         return b.name.localeCompare(a.name);
                     }
                 });
-            } else if (sort_by === "artist") {
+            } else if (sort_by === 'artist') {
                 results.sort((a, b) => {
-                    if (sort_order === "asc") {
+                    if (sort_order === 'asc') {
                         return a.artist.name.localeCompare(b.artist.name);
                     } else {
                         return b.artist.name.localeCompare(a.artist.name);
                     }
                 });
-            } else if (sort_by === "album") {
+            } else if (sort_by === 'album') {
                 results.sort((a, b) => {
-                    if (sort_order === "asc") {
+                    if (sort_order === 'asc') {
                         return a.album.name.localeCompare(b.album.name);
                     } else {
                         return b.album.name.localeCompare(a.album.name);
                     }
                 });
-            } else if (sort_by === "release_date") {
+            } else if (sort_by === 'release_date') {
                 results.sort((a, b) => {
-                    if (sort_order === "asc") {
+                    if (sort_order === 'asc') {
                         return (
                             new Date(a.release_date) < new Date(b.release_date)
                         );
@@ -125,23 +125,23 @@ class Rating {
 
         // Filter the tracks
         if (filter_by) {
-            if (filter_by === "rating") {
+            if (filter_by === 'rating') {
                 results = results.filter((track) => {
                     return track.rating === filter_value;
                 });
-            } else if (filter_by === "name") {
+            } else if (filter_by === 'name') {
                 results = results.filter((track) => {
                     return track.name === filter_value;
                 });
-            } else if (filter_by === "artist") {
+            } else if (filter_by === 'artist') {
                 results = results.filter((track) => {
                     return track.artist.name === filter_value;
                 });
-            } else if (filter_by === "album") {
+            } else if (filter_by === 'album') {
                 results = results.filter((track) => {
                     return track.album.name === filter_value;
                 });
-            } else if (filter_by === "release_date") {
+            } else if (filter_by === 'release_date') {
                 results = results.filter((track) => {
                     return track.album.release_date === filter_value;
                 });

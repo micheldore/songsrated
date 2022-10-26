@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import RankingFilter from "./rankingfilter";
+import { useState, useEffect } from 'react';
+import RankingFilter from './rankingfilter';
 
 export default function RankingTable({ ...props }) {
     const [tracks, setTracks] = useState([]);
     const [page, setPage] = useState(1);
     const [per_page, setPerPage] = useState(10);
-    const [sort_by, setSortBy] = useState("rating");
-    const [sort_order, setSortOrder] = useState("desc");
+    const [sort_by, setSortBy] = useState('rating');
+    const [sort_order, setSortOrder] = useState('desc');
     const [filter_by, setFilterBy] = useState(null);
     const [filter_value, setFilterValue] = useState(null);
     const [total_pages, setTotalPages] = useState(1);

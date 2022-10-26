@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { BiUpvote, BiPlay, BiPause } from "react-icons/bi";
-import ReactAudioPlayer from "react-audio-player";
+import { useState, useEffect } from 'react';
+import { BiUpvote, BiPlay, BiPause } from 'react-icons/bi';
+import ReactAudioPlayer from 'react-audio-player';
 
 export default function Song({ ...props }) {
     const [player, setSongPlayer] = useState(null);
@@ -35,8 +35,8 @@ export default function Song({ ...props }) {
                                         className="vote-play-button"
                                         src={
                                             props.isPlaying
-                                                ? "pause_button.png"
-                                                : "play_button.png"
+                                                ? 'pause_button.png'
+                                                : 'play_button.png'
                                         }
                                         alt=""
                                     />

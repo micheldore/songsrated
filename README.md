@@ -15,7 +15,6 @@ Welcome to the Songsrated repo. This is an open source web app made to discover 
 ![Contributors](https://img.shields.io/github/contributors/micheldore/songsrated?color=blue)
 ![Follow](https://img.shields.io/github/followers/micheldore?label=Please%20follow%20%20to%20support%20my%20work%20%F0%9F%99%8F&style=social)
 
-
 ## Run Locally
 
 Clone the project
@@ -74,13 +73,10 @@ See `contributing.md` for ways to get started.
 
 Please adhere to this project's `code of conduct`.
 
-
 ## Authors
 
-- [@micheldore](https://www.github.com/micheldore)
-
+-   [@micheldore](https://www.github.com/micheldore)
 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-

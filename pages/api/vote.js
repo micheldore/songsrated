@@ -1,12 +1,12 @@
-import { getSession } from "next-auth/react";
-import User from "../../models/User";
-import Vote from "../../models/Vote";
+import { getSession } from 'next-auth/react';
+import User from '../../models/User';
+import Vote from '../../models/Vote';
 const user = new User();
 var dbUser = null;
 
 export default async (req, res) => {
     // Check if method is post, if not return error
-    if (req.method !== "POST") {
+    if (req.method !== 'POST') {
         res.statusCode = 405;
         res.end();
         return;
@@ -15,7 +15,7 @@ export default async (req, res) => {
     const session = await getSession({ req });
     if (!session?.user?.email) {
         res.statusCode = 403;
-        res.json({ error: "User not found" });
+        res.json({ error: 'User not found' });
         return;
     }
 
@@ -26,7 +26,7 @@ export default async (req, res) => {
 
     if (!dbUser?.id) {
         res.statusCode = 403;
-        res.json({ error: "User not found" });
+        res.json({ error: 'User not found' });
         return;
     }
 
@@ -38,7 +38,7 @@ export default async (req, res) => {
         !req.body?.loser_id.length
     ) {
         res.statusCode = 400;
-        res.json({ error: "Missing winner or loser id" });
+        res.json({ error: 'Missing winner or loser id' });
         return;
     }
 
