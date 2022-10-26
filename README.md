@@ -42,6 +42,29 @@ Start the server
   yarn dev
 ```
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`NEXT_PUBLIC_CLIENT_ID` - The Spotify Client ID from your project in your developer account
+
+`NEXT_PUBLIC_CLIENT_SECRET` - The Spotify Client Secret from your project in your developer account
+
+`NEXTAUTH_URL` - The callback url for the NextAuth package. Set to http://localhost:3000/api/auth/, or your domain if running on a server
+
+`JWT_SECRET` - The JWT token secret
+
+`NEXTAUTH_SECRET` - A secret for NextAuth, see their documentation
+
+`DATABASE_HOST` - The database hostname
+
+`DATABASE_USER` - The database username
+
+`DATABASE_PASSWORD` - The database password
+
+`DATABASE_NAME` - The database name
+
+`DATABASE_URL` - The full mysql connection url
 
 ## Contributing
 
