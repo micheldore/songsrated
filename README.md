@@ -1,10 +1,12 @@
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/22073531/197780929-2d55a09f-d5e6-4e26-b531-1cde9977179a.png" height="250px" style="margin:auto;"/>
-</p>
+<h1>
+    <p align="center">
+    <img src="https://user-images.githubusercontent.com/22073531/197780929-2d55a09f-d5e6-4e26-b531-1cde9977179a.png" height="250px" style="margin:auto;"/>
+    </p>
+</h1>
 
 # Songsrated
 
-Welcome to the Songsrated repo. This is an open source web app made to discover what is the best song ever made.
+Welcome to the Songsrated repository. This is an open source web app made to discover what is the best song ever made.
 
 ## Badges
 
@@ -50,7 +52,7 @@ To run this project, you will need to add the following environment variables to
 
 `NEXT_PUBLIC_CLIENT_SECRET` - The Spotify Client Secret from your project in your developer account
 
-`NEXTAUTH_URL` - The callback url for the NextAuth package. Set to http://localhost:3000/api/auth/, or your domain if running on a server
+`NEXTAUTH_URL` - The callback URL for the NextAuth package. Set to <http://localhost:3000/api/auth/>, or your domain if running on a server
 
 `JWT_SECRET` - The JWT token secret
 
@@ -64,7 +66,7 @@ To run this project, you will need to add the following environment variables to
 
 `DATABASE_NAME` - The database name
 
-`DATABASE_URL` - The full mysql connection url
+`DATABASE_URL` - The full mysql connection URL
 
 ## Contributing
 
@@ -76,7 +78,7 @@ Please adhere to this project's `code of conduct`.
 
 ## Authors
 
--   [@micheldore](https://www.github.com/micheldore)
+- [@micheldore](https://www.github.com/micheldore)
 
 ## License
 
