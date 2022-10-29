@@ -12,7 +12,6 @@ Welcome to the Songsrated repository. This is an open source web app made to dis
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![Project Status: Active.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![GitHub Super-Linter](https://github.com/micheldore/songsrated/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 ![Stars](https://img.shields.io/github/stars/micheldore/songsrated?label=%E2%AD%90%20Stars)
 ![Forks](https://img.shields.io/github/forks/micheldore/songsrated?color=%23ff69b4)
 ![Contributors](https://img.shields.io/github/contributors/micheldore/songsrated?color=blue)
