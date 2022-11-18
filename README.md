@@ -45,7 +45,7 @@ Configure the environment variables in a file which should be created at the roo
 
 Upload the database scheme to the database with prisma
 ```bash
-npx prisma db push
+  npx prisma db push
 ```
 
 Start the server
