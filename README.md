@@ -37,6 +37,17 @@ Install dependencies
   yarn install
 ```
 
+Configure the environment variables in a file which should be created at the root of the project
+
+```bash
+.env
+```
+
+Upload the database scheme to the database with prisma
+```bash
+npx prisma db push
+```
+
 Start the server
 
 ```bash
