@@ -2,6 +2,10 @@ import Rating from './Rating';
 import prisma from '../db';
 import serverSpotify from '../hooks/serverSpotify';
 import DatabaseConnector from '../database/connection';
+import { getSession } from 'next-auth/react';
+import MyTrack from './MyTrack';
+import User from './User';
+
 // setup node cache
 const NodeCache = require('node-cache');
 const myCache = new NodeCache({ stdTTL: 1200 });
@@ -47,6 +51,66 @@ class Vote {
         ).then((result) => {
             // this.addOneToVoteCountOfToday(user_id);
         });
+    }
+
+    async get(req, res) {
+        const myTrack = new MyTrack(req);
+        // Check if method is GET, if not return error
+        if (req.method !== 'GET') {
+            res.statusCode = 405;
+            res.end();
+            return;
+        }
+
+        const session = await getSession({ req });
+        if (!session?.user?.email) {
+            res.statusCode = 403;
+            res.json({ error: 'User not found' });
+            return;
+        }
+
+        if (!session?.user?.db_id) {
+            res.statusCode = 403;
+            res.json({ error: 'User not found' });
+            return;
+        }
+
+        const tracks = await myTrack.getTwoRandomUnvotedTracks();
+
+        if (!tracks.length) res.json({ error: 'No tracks found' });
+        else res.json(tracks);
+    }
+
+    async set(req, res) {
+        const session = await getSession({ req });
+        if (!session?.user?.email) {
+            res.statusCode = 403;
+            res.json({ error: 'User not found' });
+            return;
+        }
+
+        const dbUser = await new User().getAndOrCreateUser(session?.user?.email, session?.user?.username);
+
+        if (!dbUser?.id) {
+            res.statusCode = 403;
+            res.json({ error: 'User not found' });
+            return;
+        }
+
+        // Check if body contains needed ids, then get winner id and loser id from the request body
+        if (!req.body?.winner_id || !req.body?.loser_id || !req.body?.winner_id.length || !req.body?.loser_id.length) {
+            res.statusCode = 400;
+            res.json({ error: 'Missing winner or loser id' });
+            return;
+        }
+
+        var winner_id = req.body?.winner_id;
+        var loser_id = req.body?.loser_id;
+
+        // Call vote function from models/Vote.js
+        await this.vote(dbUser.id, winner_id, loser_id);
+
+        res.json({ success: true });
     }
 
     async getAllUnusedVotes(user_id, limit = 2000) {

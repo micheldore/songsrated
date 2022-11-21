@@ -11,7 +11,7 @@ const Home = () => {
     const [track2Playing, setTrack2Playing] = useState(false);
 
     async function getTracks() {
-        fetch('/api/get_two_tracks')
+        fetch('/api/vote')
             .then((res) => res.json())
             .then((data) => {
                 setTrack1Playing(false);
