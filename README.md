@@ -6,7 +6,7 @@
 
 # Songsrated
 
-Welcome to the Songsrated repository. This is an open source web app made to discover what is the best song ever made.
+Welcome to the Songsrated repository. This is an open source web app made to discover song rankings!
 
 ## Badges
 
